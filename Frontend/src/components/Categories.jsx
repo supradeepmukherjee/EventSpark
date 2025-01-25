@@ -2,12 +2,12 @@ import React from "react";
 
 const Categories = () => {
   const categories = [
-    "Birthday",
-    "Wedding",
-    "Workshops",
-    "Business Conferences",
-    "Music",
-    "Parties",
+    { name: "Birthday", image: "/img/birthday.webp" },
+    { name: "Wedding", image: "/img/wedding.webp" },
+    { name: "Workshops", image: "/img/Workshops.webp" },
+    { name: "Festival", image: "/img/Festivals.webp" },
+    { name: "Music", image: "/img/Music.webp" },
+    { name: "Parties", image: "/img/Parties.webp" },
   ];
 
   return (
@@ -21,7 +21,12 @@ const Categories = () => {
             key={index}
             className="card bg-white shadow-md p-4 rounded-lg max-w-xs text-center"
           >
-            {category}
+            <img
+              src={category.image}
+              alt={category.name}
+              style={{ height: "85px" }}
+            />
+            {category.name}
           </div>
         ))}
       </div>
