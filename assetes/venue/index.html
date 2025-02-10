@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venue Selection Form</title>
+     <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Venue Selection Form</h2>
+        <form>
+            <label for="event-type">Event Type:</label>
+            <select id="event-type" name="event-type">
+                <option value="birthday">Birthday</option>
+                <option value="wedding">Wedding</option>
+                <option value="conference">Conference</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="venue">Preferred Venue:</label>
+            <input type="text" id="venue" name="venue" placeholder="Enter venue name or type">
+
+            <label for="capacity">Expected Guest Count:</label>
+            <input type="number" id="capacity" name="capacity" placeholder="e.g. 100">
+
+            <label for="date">Event Date:</label>
+            <input type="date" id="date" name="date">
+
+            <label for="extras">Additional Requirements:</label>
+            <textarea id="extras" name="extras" placeholder="Any special requests or requirements"></textarea>
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

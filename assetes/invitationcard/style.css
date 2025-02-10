@@ -1,0 +1,134 @@
+  /* General body styling */
+  body {
+    font-family: 'Merryweather', serif;
+    background-color: #f9f1e7;
+    color: #4b3621;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+    background-image: url('https://www.transparenttextures.com/patterns/pw-maze.png');
+}
+
+/* Form container styling */
+.invitation-form {
+    background-color: #fff;
+    border: 3px solid #d5b29b;
+    padding: 40px;
+    border-radius: 20px;
+    width: 600px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    background-image: linear-gradient(to bottom right, #f8f1e5, #f1e6d9);
+    position: relative;
+}
+
+/* Adding royal details to the form header */
+.invitation-form h2 {
+    text-align: center;
+    color: #9b7f5f;
+    font-size: 32px;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 25px;
+    letter-spacing: 3px;
+    font-family: 'Cedarville Cursive', cursive;
+    border-bottom: 2px solid #9b7f5f;
+    padding-bottom: 10px;
+}
+
+/* Input field container */
+.form-group {
+    margin: 20px 0;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #6b4f32;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 15px;
+    margin-top: 5px;
+    border-radius: 10px;
+    border: 2px solid #d5b29b;
+    font-size: 16px;
+    font-family: 'Merryweather', serif;
+    background-color: #fff;
+    box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.1);
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #9b7f5f;
+    box-shadow: 0 0 15px rgba(155, 127, 95, 0.5);
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* Royal button styling */
+.submit-btn {
+    width: 100%;
+    padding: 18px;
+    background-color: #9b7f5f;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 12px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-btn:hover {
+    background-color: #7f603c;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+}
+
+.submit-btn:active {
+    transform: scale(1);
+}
+
+/* Royal decoration (accents and frame) */
+.invitation-form::before {
+    content: "👑";
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 30px;
+}
+
+.invitation-form::after {
+    content: "👑";
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 30px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .invitation-form {
+        width: 90%;
+        padding: 30px;
+    }
+
+    .invitation-form h2 {
+        font-size: 28px;
+    }
+
+    .submit-btn {
+        font-size: 18px;
+    }
+}

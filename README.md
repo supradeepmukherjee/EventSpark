@@ -1,2 +1,2 @@
 # EventSpark
-Event Management System
+Event Management
