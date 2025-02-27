@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Decoration Form</title>
+     <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Decoration Form</h2>
+        <form>
+            <label for="theme">Decoration Theme:</label>
+            <select id="theme" name="theme">
+                <option value="classic">Classic</option>
+                <option value="modern">Modern</option>
+                <option value="rustic">Rustic</option>
+                <option value="beach">Beach</option>
+                <option value="bohemian">Bohemian</option>
+            </select>
+
+            <label for="color">Preferred Color Scheme:</label>
+            <input type="text" id="color" name="color" placeholder="e.g. White and Gold">
+
+            <label for="flowers">Flower Arrangements:</label>
+            <input type="text" id="flowers" name="flowers" placeholder="e.g. Roses, Lilies">
+
+            <label for="extras">Additional Requests:</label>
+            <textarea id="extras" name="extras" placeholder="Any special decorations or requirements"></textarea>
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

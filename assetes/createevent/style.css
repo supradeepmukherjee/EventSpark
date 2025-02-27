@@ -1,0 +1,60 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: left;
+}
+/* h2 {
+    margin-bottom: 20px;
+} */
+.container h2 {
+text-align: center;
+color: #007bff;
+font-size: 28px;
+margin-bottom: 30px;
+font-weight: bold;
+}
+.input-box, .checkbox-group, .dropdown {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.checkbox-group label {
+    display: block;
+    text-align: left;
+    padding: 5px 0;
+}
+.message {
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #007BFF;
+    display: none;
+}
+.btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.submit-btn {
+    text-align: center;
+    background-color: #007BFF;
+    color: white;
+}
+.submit-btn:hover {
+    background-color: #0056b3;
+}
