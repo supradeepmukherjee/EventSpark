@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Creation Form</title>
+   <link rel="stylesheet" href="style.css">
+    <script>
+        function showMessage(event) {
+            event.preventDefault();
+            document.getElementById("eventMessage").style.display = "block";
+        }
+    </script>
+</head>
+<body>
+    <div class="container" id="createevent">
+        <h2>Event Creation Form</h2>
+        <form onsubmit="showMessage(event)">
+            <label for="eventName">Name of the Event:</label>
+            <input type="text" id="eventName" class="input-box" placeholder="Enter Event Name" required>
+            
+            <label for="venue">Venue:</label>
+            <select id="venue" class="dropdown" required>
+                <option value="">Select Venue</option>
+                <option value="Hall A">Hall A</option>
+                <option value="Hall B">Hall B</option>
+                <option value="Garden Area">Garden Area</option>
+                <option value="Banquet Hall">Banquet Hall</option>
+            </select>
+            
+            <label for="startDate">Starting Date:</label>
+            <input type="date" id="startDate" class="input-box" required>
+            
+            <label for="endDate">Ending Date:</label>
+            <input type="date" id="endDate" class="input-box" required>
+            
+            <label for="guests">Number of Guests:</label>
+            <input type="number" id="guests" class="input-box" placeholder="Enter Number of Guests" required>
+            
+            <label>Required Services</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="required-things"> Catering</label>
+                <label><input type="checkbox" name="required-things"> Decoration</label>
+                <label><input type="checkbox" name="required-things"> Music</label>
+                <label><input type="checkbox" name="required-things"> Lighting</label>
+            </div>
+            
+            <label for="additionalInfo">Additional Information:</label>
+            <textarea id="additionalInfo" class="input-box" placeholder="Enter any additional details" rows="4"></textarea>
+            
+            <button type="submit" class="btn submit-btn">Submit</button>
+        </form>
+        <p id="eventMessage" class="message">Your event has been created successfully.</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lighting Decoration Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Lighting Decoration Form</h2>
+        <form>
+            <label for="lighting-type">Lighting Type:</label>
+            <select id="lighting-type" name="lighting-type">
+                <option value="led">LED</option>
+                <option value="fairy">Fairy Lights</option>
+                <option value="chandeliers">Chandeliers</option>
+                <option value="neon">Neon Lights</option>
+            </select>
+
+            <label for="color">Preferred Light Color:</label>
+            <input type="text" id="color" name="color" placeholder="e.g. Warm White, Blue">
+
+            <label for="intensity">Light Intensity (in lumens):</label>
+            <input type="number" id="intensity" name="intensity" placeholder="e.g. 500">
+
+            <label for="extras">Additional Requirements:</label>
+            <textarea id="extras" name="extras" placeholder="Any special lighting effects or needs"></textarea>
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
