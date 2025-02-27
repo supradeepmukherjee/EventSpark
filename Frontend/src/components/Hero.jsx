@@ -1,21 +1,35 @@
 import React from "react";
-import backgroundImage from "/img/download.webp";
+
 const Hero = () => {
   return (
-    <section
-      className="hero bg-cover bg-center text-center py-16"
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-
-        // Replace this URL with your image URL
-      }}
-    >
-      <h1 className="text-4xl font-bold text-fuchsia-500 mb-6">
-        Events in Kolkata
-      </h1>
-      <button className="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-700">
-        Hook me with Happenings!
-      </button>
+    <section id="home" className="py-8 px-[9%] bg-[#1e1e1e] text-white">
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-bold">
+          "YOUR EVENT <span className="text-blue-500">OUR EXPERTIES</span>"
+        </h1>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <img
+          src="/images/slide-1.jpg"
+          alt="Event 1"
+          className="w-full h-48 object-cover rounded-lg"
+        />
+        <img
+          src="/images/slide-2.jpg"
+          alt="Event 2"
+          className="w-full h-48 object-cover rounded-lg"
+        />
+        <img
+          src="/images/slide-3.jpg"
+          alt="Event 3"
+          className="w-full h-48 object-cover rounded-lg"
+        />
+        <img
+          src="/images/slide-4.jpg"
+          alt="Event 4"
+          className="w-full h-48 object-cover rounded-lg"
+        />
+      </div>
     </section>
   );
 };
