@@ -1,2 +1,0 @@
-# EventSpark
-Event Management
