@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import Card, { CardContent } from "../components/ui/Card";
 import { MapPin, Mail, Music, Utensils, Image, Lightbulb } from "lucide-react";
