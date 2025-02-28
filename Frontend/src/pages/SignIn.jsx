@@ -46,7 +46,7 @@ const SignIn = () => {
           </button>
         </form>
         <p className="text-center mt-4 text-sm">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <span
             className="text-green-500 cursor-pointer"
             onClick={() => navigate("/sign-up")}
