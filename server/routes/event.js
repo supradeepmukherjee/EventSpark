@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { create } from '../controllers/event.js'
+import { create, getEventDetails } from '../controllers/event.js'
 
 const app = Router()
 
