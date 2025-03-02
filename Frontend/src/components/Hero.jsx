@@ -3,7 +3,7 @@ const Hero = () => (
   <section id="home" className="py-8 px-[9%] bg-[#1e1e1e] text-white">
     <div className="text-center mb-8">
       <h1 className="text-4xl font-bold">
-        &ldquo;YOUR EVENT <span className="text-blue-500">OUR EXPERTIES</span>&rdquo;
+        &ldquo;YOUR EVENT <span className="text-blue-500">OUR EXPERTISE</span>&rdquo;
       </h1>
     </div>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
