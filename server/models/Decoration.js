@@ -4,7 +4,7 @@ const schema = new Schema({
     event: {
         ref: 'Event',
         type: Schema.Types.ObjectId,
-        required:true
+        required: true
     },
     theme: {
         type: String,
@@ -14,7 +14,16 @@ const schema = new Schema({
         type: String,
         required: true,
     },
-    flowers: {
+    flowers: [{
+        type: String,
+        required: true,
+        enum: ["Roses", "Lilies", "Orchids", "Tulips", "Sunflowers"]
+    }],
+    selectedImage: {
+        type: String,
+        required: true,
+    },
+    selectedBudget: {
         type: String,
         required: true,
     },
