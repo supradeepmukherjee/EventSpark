@@ -2,29 +2,29 @@ import React, { useState } from "react";
 
 const themeData = {
   classic: [
-    { image: "https://your-image-url.com/classic1.jpg", budget: "$500" },
-    { image: "https://your-image-url.com/classic2.jpg", budget: "$600" },
-    { image: "https://your-image-url.com/classic3.jpg", budget: "$700" },
+    { image: "/images/decoration/1.jpg", budget: "$500" },
+    { image: "/images/decoration/2.jpg", budget: "$600" },
+    { image: "/images/decoration/3.jpg", budget: "$700" },
   ],
   modern: [
-    { image: "https://your-image-url.com/modern1.jpg", budget: "$800" },
-    { image: "https://your-image-url.com/modern2.jpg", budget: "$900" },
-    { image: "https://your-image-url.com/modern3.jpg", budget: "$1000" },
+    { image: "/images/decoration/4.jpg", budget: "$800" },
+    { image: "/images/decoration/5.jpg", budget: "$900" },
+    { image: "/images/decoration/6.jpg", budget: "$1000" },
   ],
   rustic: [
-    { image: "https://your-image-url.com/rustic1.jpg", budget: "$700" },
-    { image: "https://your-image-url.com/rustic2.jpg", budget: "$750" },
-    { image: "https://your-image-url.com/rustic3.jpg", budget: "$800" },
+    { image: "/images/decoration/7.jpg", budget: "$700" },
+    { image: "/images/decoration/8.jpg", budget: "$750" },
+    { image: "/images/decoration/9.jpg", budget: "$800" },
   ],
   beach: [
-    { image: "https://your-image-url.com/beach1.jpg", budget: "$850" },
-    { image: "https://your-image-url.com/beach2.jpg", budget: "$900" },
-    { image: "https://your-image-url.com/beach3.jpg", budget: "$950" },
+    { image: "/images/decoration/10.jpg", budget: "$850" },
+    { image: "/images/decoration/11.jpg", budget: "$900" },
+    { image: "/images/decoration/12.jpg", budget: "$950" },
   ],
   bohemian: [
-    { image: "https://your-image-url.com/bohemian1.jpg", budget: "$600" },
-    { image: "https://your-image-url.com/bohemian2.jpg", budget: "$650" },
-    { image: "https://your-image-url.com/bohemian3.jpg", budget: "$700" },
+    { image: "/images/decoration/13.jpg", budget: "$600" },
+    { image: "/images/decoration/14.jpg", budget: "$650" },
+    { image: "/images/decoration/15.jpg", budget: "$700" },
   ],
 };
 

@@ -1,26 +1,56 @@
-import  { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSignIn = (event) => {
+  const handleSignIn = async (event) => {
     event.preventDefault();
+    setLoading(true);
+    setError("");
 
-    // Placeholder authentication logic
-    console.log("Signed In with:", email, password);
-    alert("Sign In Successful!");
+    try {
+      const response = await fetch(
+        import.meta.env.VITE_SERVER + "/user/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
-    // Redirect to the home page after login
-    navigate("/");
+      if (!response.ok) {
+        throw new Error("Invalid email or password");
+      }
+
+      const data = await response.json();
+      console.log(data);
+      console.log(data.token);
+      // Save user session (JWT token or user data)
+      localStorage.setItem("userToken", data.token);
+
+      alert("Sign In Successful!");
+      navigate("/"); // Redirect to homepage
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
         <h2 className="text-2xl font-semibold text-center mb-4">Sign In</h2>
+
+        {error && <p className="text-red-500 text-center">{error}</p>}
+
         <form onSubmit={handleSignIn}>
           <input
             type="email"
@@ -41,12 +71,14 @@ const SignIn = () => {
           <button
             type="submit"
             className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600"
+            disabled={loading}
           >
-            Sign In
+            {loading ? "Signing In..." : "Sign In"}
           </button>
         </form>
+
         <p className="text-center mt-4 text-sm">
-          Don&apos;t have an account?{" "}
+          Don't have an account?{" "}
           <span
             className="text-green-500 cursor-pointer"
             onClick={() => navigate("/sign-up")}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
@@ -6,28 +6,53 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSignUp = (event) => {
+  const handleSignUp = async (event) => {
     event.preventDefault();
+    setError("");
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      setError("Passwords do not match!");
       return;
     }
 
-    // Placeholder for sign-up logic
-    console.log("Signed Up with:", name, email, password);
-    alert("Sign Up Successful!");
+    setLoading(true);
 
-    // Redirect to Sign In page after registration
-    navigate("/sign-in");
+    try {
+      const response = await fetch(
+        import.meta.env.VITE_SERVER + "/user/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name, email, password }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to register. Try again!");
+      }
+
+      alert("Sign Up Successful! 🎉");
+      navigate("/sign-in"); // Redirect to Sign In page
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
         <h2 className="text-2xl font-semibold text-center mb-4">Sign Up</h2>
+
+        {error && <p className="text-red-500 text-center">{error}</p>}
+
         <form onSubmit={handleSignUp}>
           <input
             type="text"
@@ -64,10 +89,12 @@ const SignUp = () => {
           <button
             type="submit"
             className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600"
+            disabled={loading}
           >
-            Sign Up
+            {loading ? "Signing Up..." : "Sign Up"}
           </button>
         </form>
+
         <p className="text-center mt-4 text-sm">
           Already have an account?{" "}
           <span
