@@ -11,15 +11,15 @@ import sendEmail from '../utils/sendEmail.js'
 const register = tryCatch(async (req, res, next) => {
     const { name, password, email } = req.body
     const file = req.file
-    if (!file) return next(new ErrorHandler(400, 'Please upload Chavi'))
+    // if (!file) return next(new ErrorHandler(400, 'Please upload Chavi'))
     const userExists = await User.findOne({ email })
     if (userExists) return next(new ErrorHandler(400, 'Email already registered'))
-    const chaviResult = await uploadToCloudinary([file])
-    const chavi = {
-        publicID: chaviResult[0].publicID,
-        url: chaviResult[0].url,
-    }
-    const user = await User.create({ name, password, chavi, email })
+    // const chaviResult = await uploadToCloudinary([file])
+    // const chavi = {
+    //     publicID: chaviResult[0].publicID,
+    //     url: chaviResult[0].url,
+    // }
+    const user = await User.create({ name, password, email })
     sendToken(res, user, 201, 'Registration Successful')
 })
 

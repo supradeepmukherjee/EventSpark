@@ -20,11 +20,11 @@ const schema = new Schema({
     chavi: {
         publicID: {
             type: String,
-            required: true
+            // required: true
         },
         url: {
             type: String,
-            required: true
+            // required: true
         },
     },
     resetPasswordToken: String,
