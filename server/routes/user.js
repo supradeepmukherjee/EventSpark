@@ -7,7 +7,7 @@ import { singleChavi } from '../middlewares/multer.js'
 const app = Router()
 
 app.post('/register', singleChavi, registerValidator(), validateHandler, register)
-app.put('/login', loginValidator(), validateHandler, login)
+app.post('/login', loginValidator(), validateHandler, login)
 app.put('/forgot-password', forgotPasswordValidator(), validateHandler, forgotPassword)
 app.put('/reset-password/:token', resetPasswordValidator(), validateHandler, resetPassword)
 

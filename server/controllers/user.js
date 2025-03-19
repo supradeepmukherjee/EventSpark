@@ -25,6 +25,7 @@ const register = tryCatch(async (req, res, next) => {
 
 const login = tryCatch(async (req, res, next) => {
     const { email, password } = req.body
+    console.log(req.body)
     const user = await User.findOne({ email }).select('+password')
     if (!user) return next(new ErrorHandler(400, 'Username or Password is incorrect'))
     const isMatch = await compare(password, user.password)
