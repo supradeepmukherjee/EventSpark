@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -7,6 +8,14 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { user, setUser } = useContext(AuthContext);
+
+  // If user is already logged in, redirect to homepage
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   const handleSignIn = async (event) => {
     event.preventDefault();
@@ -30,10 +39,10 @@ const SignIn = () => {
       }
 
       const data = await response.json();
-      console.log(data);
-      console.log(data.token);
-      // Save user session (JWT token or user data)
+
+      // Save user session
       localStorage.setItem("userToken", data.token);
+      setUser({ email });
 
       alert("Sign In Successful!");
       navigate("/"); // Redirect to homepage
