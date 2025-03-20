@@ -89,6 +89,18 @@ const Header = () => {
                 <p className="font-semibold">{user.name || "User"}</p>
                 <p className="text-sm text-gray-500">{user.email}</p>
               </div>
+
+              <Link
+                to={
+                  user.role === "Customer"
+                    ? "/customer-dashboard"
+                    : "/organizer-dashboard"
+                }
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Dashboard
+              </Link>
+
               <Link
                 to="/change-password"
                 className="block px-4 py-2 hover:bg-gray-100"

@@ -7,8 +7,16 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("userToken");
-    if (token) {
-      setUser({ email: "user@example.com" }); // Replace with API call to get user info
+    const userData = localStorage.getItem("userData"); // Retrieve stored user info
+
+    if (token && userData) {
+      try {
+        const parsedUser = JSON.parse(userData);
+        setUser(parsedUser); // Set user with role
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+        localStorage.removeItem("userData"); // Clear corrupted data
+      }
     }
   }, []);
 

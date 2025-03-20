@@ -10,11 +10,10 @@ const SignIn = () => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(AuthContext);
 
-  // If user is already logged in, redirect to the appropriate dashboard
+  // Redirect if already logged in
   useEffect(() => {
     if (user) {
-      const storedRole = localStorage.getItem("userRole");
-      if (storedRole === "organizer") {
+      if (user.role === "Organizer") {
         navigate("/organizer-dashboard");
       } else {
         navigate("/customer-dashboard");
@@ -32,31 +31,29 @@ const SignIn = () => {
         import.meta.env.VITE_SERVER + "/user/login",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }), // Removed role here
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Invalid email or password");
-      }
+      if (!response.ok) throw new Error("Invalid email or password");
 
       const data = await response.json();
 
-      // Save user session & role
-      localStorage.setItem("userToken", data.token);
-      localStorage.setItem("userRole", data.role); // Store role
-      setUser({ email, role: data.role });
+      // Store user session
+      localStorage.setItem("userToken", data.user.token);
+      localStorage.setItem(
+        "userData",
+        JSON.stringify({ email: data.user.email, role: data.user.role })
+      );
 
-      alert("Sign In Successful!");
-
-      // Redirect based on role
-      if (data.role === "organizer") {
-        navigate("/organizer-dashboard");
-      } else {
+      setUser({ email: data.user.email, role: data.user.role });
+      // console.log(data.user.role);
+      // Redirect based on role immediately
+      if (data.user.role === "Customer") {
         navigate("/customer-dashboard");
+      } else {
+        navigate("/organizer-dashboard");
       }
     } catch (err) {
       setError(err.message);
