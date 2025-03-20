@@ -1,6 +1,12 @@
 import { useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const FoodAndDrinkForm = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     eventName: "",
     guests: "",
@@ -47,6 +53,13 @@ const FoodAndDrinkForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!user) {
+      alert("You must be logged in to fill up Food & Drink Form.");
+      navigate("/sign-in");
+      return;
+    }
+
     console.log(formData);
   };
 

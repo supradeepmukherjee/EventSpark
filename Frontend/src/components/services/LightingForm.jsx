@@ -1,6 +1,12 @@
 import { useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const LightingForm = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     lightingType: "led",
     color: "",
@@ -15,6 +21,12 @@ const LightingForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!user) {
+      alert("You must be logged in to fill up Lighting Form.");
+      navigate("/sign-in");
+      return;
+    }
     console.log("Lighting Form Data:", formData);
     // Add form submission logic here
   };

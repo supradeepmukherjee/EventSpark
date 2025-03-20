@@ -10,10 +10,15 @@ const SignIn = () => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(AuthContext);
 
-  // If user is already logged in, redirect to homepage
+  // If user is already logged in, redirect to the appropriate dashboard
   useEffect(() => {
     if (user) {
-      navigate("/");
+      const storedRole = localStorage.getItem("userRole");
+      if (storedRole === "organizer") {
+        navigate("/organizer-dashboard");
+      } else {
+        navigate("/customer-dashboard");
+      }
     }
   }, [user, navigate]);
 
@@ -40,12 +45,19 @@ const SignIn = () => {
 
       const data = await response.json();
 
-      // Save user session
+      // Save user session & role
       localStorage.setItem("userToken", data.token);
-      setUser({ email });
+      localStorage.setItem("userRole", data.role); // Store role
+      setUser({ email, role: data.role });
 
       alert("Sign In Successful!");
-      navigate("/"); // Redirect to homepage
+
+      // Redirect based on role
+      if (data.role === "organizer") {
+        navigate("/organizer-dashboard");
+      } else {
+        navigate("/customer-dashboard");
+      }
     } catch (err) {
       setError(err.message);
     } finally {

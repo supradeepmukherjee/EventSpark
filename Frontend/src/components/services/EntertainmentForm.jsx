@@ -1,6 +1,12 @@
 import { useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const EntertainmentForm = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     music: "",
     games: "",
@@ -15,6 +21,13 @@ const EntertainmentForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!user) {
+      alert("You must be logged in to fill Entertainment Form.");
+      navigate("/sign-in");
+      return;
+    }
+
     console.log(formData);
   };
 

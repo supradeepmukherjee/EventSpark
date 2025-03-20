@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const themeData = {
   classic: [
@@ -38,6 +41,9 @@ const colorOptions = [
 const flowerOptions = ["Roses", "Lilies", "Orchids", "Tulips", "Sunflowers"];
 
 const DecorationForm = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     theme: "classic",
     color: "",
@@ -64,6 +70,12 @@ const DecorationForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!user) {
+      alert("You must be logged in to proceed further");
+      navigate("/sign-in");
+      return;
+    }
+
     setShowPreviews(true);
   };
 

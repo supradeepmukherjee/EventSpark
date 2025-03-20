@@ -1,6 +1,11 @@
 import { useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const VenueSelectionForm = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     eventType: "birthday",
     venue: "",
@@ -15,6 +20,12 @@ const VenueSelectionForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!user) {
+      alert("You must be logged in for Venue Selection.");
+      navigate("/sign-in");
+      return;
+    }
     console.log(formData);
   };
 
