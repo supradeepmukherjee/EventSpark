@@ -21,6 +21,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp.jsx";
 import Status from "./pages/EventStatus.jsx";
 import NotFound from "./pages/NotFound"; // For 404 handling
+import ChangePassword from "./pages/ChangePassword.jsx";
 
 // ✅ Layout component (Header will be shown on all pages)
 const Layout = ({ children }) => (
@@ -138,6 +139,8 @@ function App() {
       <Route path="/food-and-drinks" element={<FoodAndDrinkForm />} />
       <Route path="/decoration" element={<DecorationForm />} />
       <Route path="/lighting" element={<LightingForm />} />
+
+      <Route path="/change-password" element={<ChangePassword />} />
 
       {/* 404 Not Found Page */}
       <Route path="*" element={<NotFound />} />

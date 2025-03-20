@@ -1,11 +1,27 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const CreateEvent = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [messageVisible, setMessageVisible] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (!user) {
+      alert("You must be logged in to create an event.");
+      setError("You must be logged in to create an event.");
+      setTimeout(() => {
+        navigate("/sign-in");
+      }, 2000);
+      return;
+    }
+
     setMessageVisible(true);
+    setError("");
   };
 
   return (
@@ -14,6 +30,9 @@ const CreateEvent = () => {
         <h2 className="text-2xl font-bold text-blue-500 text-center mb-4">
           Event Creation Form
         </h2>
+
+        {error && <p className="text-red-500 text-center mb-2">{error}</p>}
+
         <form onSubmit={handleSubmit} className="space-y-3">
           <label className="block">Name of the Event:</label>
           <input

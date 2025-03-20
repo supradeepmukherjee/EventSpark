@@ -1,9 +1,19 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
+import { AuthContext } from "../context/AuthContext";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, setUser } = useContext(AuthContext);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("userToken");
+    setUser(null);
+    navigate("/sign-in");
+  };
 
   return (
     <header className="bg-[#333] py-4 px-[9%] shadow-md">
@@ -29,6 +39,7 @@ const Header = () => {
           } sm:flex`}
         >
           <ul className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
+            {/* Navigation Links */}
             {[
               { name: "Home", path: "/" },
               { name: "Service", path: "/service" },
@@ -38,7 +49,6 @@ const Header = () => {
               { name: "Price", path: "/pricing" },
               { name: "Review", path: "/reviews" },
               { name: "Contact", path: "/contact" },
-              { name: "Sign In", path: "/sign-in" },
               { name: "Status", path: "/status" },
             ].map((link) => (
               <li key={link.name}>
@@ -53,6 +63,47 @@ const Header = () => {
             ))}
           </ul>
         </nav>
+
+        {/* User Profile Section (Right Side) */}
+        <div className="relative">
+          {user ? (
+            <div
+              className="flex items-center space-x-3 cursor-pointer relative"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
+              <FaUserCircle className="text-white text-2xl" />
+            </div>
+          ) : (
+            <Link
+              to="/sign-in"
+              className="text-white hover:text-blue-500 transition-colors"
+            >
+              Sign In
+            </Link>
+          )}
+
+          {/* Dropdown Menu (Only visible when clicked) */}
+          {user && dropdownOpen && (
+            <div className="absolute right-0 mt-2 w-52 bg-white shadow-lg rounded-md text-gray-700">
+              <div className="p-4 border-b">
+                <p className="font-semibold">{user.name || "User"}</p>
+                <p className="text-sm text-gray-500">{user.email}</p>
+              </div>
+              <Link
+                to="/change-password"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Change Password
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100  "
+              >
+                Sign Out
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );
