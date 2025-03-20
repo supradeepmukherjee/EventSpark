@@ -9,7 +9,7 @@ import { ErrorHandler } from '../utils/utility.js'
 import sendEmail from '../utils/sendEmail.js'
 
 const register = tryCatch(async (req, res, next) => {
-    const { name, password, email } = req.body
+    const { name, password, email, role } = req.body
     const file = req.file
     // if (!file) return next(new ErrorHandler(400, 'Please upload Chavi'))
     const userExists = await User.findOne({ email })
@@ -19,7 +19,7 @@ const register = tryCatch(async (req, res, next) => {
     //     publicID: chaviResult[0].publicID,
     //     url: chaviResult[0].url,
     // }
-    const user = await User.create({ name, password, email })
+    const user = await User.create({ name, password, email, role })
     sendToken(res, user, 201, 'Registration Successful')
 })
 
