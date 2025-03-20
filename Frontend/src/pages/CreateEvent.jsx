@@ -7,8 +7,32 @@ const CreateEvent = () => {
   const navigate = useNavigate();
   const [messageVisible, setMessageVisible] = useState(false);
   const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    venue: "",
+    start: "",
+    end: "",
+    numberOfGuests: "",
+    services: [],
+    additionalInfo: "",
+  });
 
-  const handleSubmit = (event) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleServiceChange = (e) => {
+    const { checked, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      services: checked
+        ? [...prev.services, value]
+        : prev.services.filter((service) => service !== value),
+    }));
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!user) {
@@ -20,8 +44,42 @@ const CreateEvent = () => {
       return;
     }
 
-    setMessageVisible(true);
+    setMessageVisible(false);
     setError("");
+
+    const eventDetails = {
+      ...formData,
+      numberOfGuests: parseInt(formData.numberOfGuests, 10),
+      user: user._id,
+    };
+
+    try {
+      const response = await fetch(import.meta.env.VITE_SERVER + "/event", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(eventDetails),
+      });
+
+      const data = await response.json();
+      console.log(data);
+      if (!response.ok) {
+        throw new Error("Failed to create event");
+      }
+
+      setMessageVisible(true);
+      setFormData({
+        name: "",
+        venue: "",
+        start: "",
+        end: "",
+        numberOfGuests: "",
+        services: [],
+        additionalInfo: "",
+      });
+    } catch (error) {
+      console.error("Error:", error);
+      setError("Something went wrong. Please try again!");
+    }
   };
 
   return (
@@ -37,6 +95,9 @@ const CreateEvent = () => {
           <label className="block">Name of the Event:</label>
           <input
             type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
             placeholder="Enter Event Name"
             className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
             required
@@ -44,6 +105,9 @@ const CreateEvent = () => {
 
           <label className="block">Venue:</label>
           <select
+            name="venue"
+            value={formData.venue}
+            onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
             required
           >
@@ -57,6 +121,9 @@ const CreateEvent = () => {
           <label className="block">Starting Date:</label>
           <input
             type="date"
+            name="start"
+            value={formData.start}
+            onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
             required
           />
@@ -64,6 +131,9 @@ const CreateEvent = () => {
           <label className="block">Ending Date:</label>
           <input
             type="date"
+            name="end"
+            value={formData.end}
+            onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
             required
           />
@@ -71,6 +141,9 @@ const CreateEvent = () => {
           <label className="block">Number of Guests:</label>
           <input
             type="number"
+            name="numberOfGuests"
+            value={formData.numberOfGuests}
+            onChange={handleChange}
             placeholder="Enter Number of Guests"
             className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
             required
@@ -83,6 +156,9 @@ const CreateEvent = () => {
                 <label key={index} className="flex items-center space-x-2">
                   <input
                     type="checkbox"
+                    value={service}
+                    checked={formData.services.includes(service)}
+                    onChange={handleServiceChange}
                     className="form-checkbox text-blue-500"
                   />
                   <span>{service}</span>
@@ -93,6 +169,9 @@ const CreateEvent = () => {
 
           <label className="block">Additional Information:</label>
           <textarea
+            name="additionalInfo"
+            value={formData.additionalInfo}
+            onChange={handleChange}
             placeholder="Enter any additional details"
             rows="4"
             className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"

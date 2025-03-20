@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const themeData = {
   classic: [
@@ -43,6 +43,7 @@ const flowerOptions = ["Roses", "Lilies", "Orchids", "Tulips", "Sunflowers"];
 const DecorationForm = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  // const { id } = useParams();
 
   const [formData, setFormData] = useState({
     theme: "classic",
@@ -88,6 +89,7 @@ const DecorationForm = () => {
 
     // Creating the final data object
     const finalData = {
+      // event: id,
       theme: formData.theme,
       color: formData.color,
       flowers: formData.flowers,
@@ -100,7 +102,7 @@ const DecorationForm = () => {
 
     try {
       const response = await fetch(
-        "https://your-backend-api.com/submit-decoration",
+        import.meta.env.VITE_SERVER + "/decoration",
         {
           method: "POST",
           headers: {

@@ -40,14 +40,23 @@ const SignIn = () => {
 
       const data = await response.json();
 
+      // console.log(data.user.name);
       // Store user session
       localStorage.setItem("userToken", data.user.token);
       localStorage.setItem(
         "userData",
-        JSON.stringify({ email: data.user.email, role: data.user.role })
+        JSON.stringify({
+          name: data.user.name,
+          email: data.user.email,
+          role: data.user.role,
+        })
       );
 
-      setUser({ email: data.user.email, role: data.user.role });
+      setUser({
+        name: data.user.name,
+        email: data.user.email,
+        role: data.user.role,
+      });
       // console.log(data.user.role);
       // Redirect based on role immediately
       if (data.user.role === "Customer") {

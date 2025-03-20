@@ -1,56 +1,130 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { Link } from "react-router-dom";
+import { FaHome, FaUserCircle } from "react-icons/fa";
 
 const OrganizerDashboard = () => {
-  const navigate = useNavigate();
-  const [events, setEvents] = useState([]);
+  const { user } = useContext(AuthContext);
+  const [formSubmissions, setFormSubmissions] = useState([]);
 
   useEffect(() => {
-    // Fetch events managed by the organizer (dummy data for now)
-    setEvents([
-      {
-        id: 1,
-        name: "Music Concert",
-        venue: "Garden Area",
-        date: "2025-06-10",
-      },
-      {
-        id: 2,
-        name: "Food Festival",
-        venue: "Open Ground",
-        date: "2025-07-05",
-      },
-    ]);
+    const fetchSubmissions = async () => {
+      try {
+        const response = await fetch("https://your-backend-api.com/forms");
+        const data = await response.json();
+        setFormSubmissions(data);
+      } catch (error) {
+        console.error("Error fetching submissions:", error);
+      }
+    };
+
+    fetchSubmissions();
   }, []);
 
+  const handleStatusChange = async (id, status) => {
+    try {
+      await fetch(`https://your-backend-api.com/forms/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+
+      setFormSubmissions((prevSubmissions) =>
+        prevSubmissions.map((form) =>
+          form.id === id ? { ...form, status } : form
+        )
+      );
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold text-purple-500 mb-4">
-        Organizer Dashboard
-      </h1>
+    <div className="min-h-screen bg-gray-100">
+      {/* Header */}
+      <header className="bg-[#333] text-white p-4 flex justify-between items-center">
+        <Link
+          to="/"
+          className="flex items-center space-x-2 text-white hover:text-gray-200"
+        >
+          <FaHome className="text-2xl" />
+          <span className="text-lg font-semibold">Home</span>
+        </Link>
+        <h1 className="text-2xl font-bold">Organizer Dashboard</h1>
+        <div className="flex items-center space-x-2">
+          <FaUserCircle className="text-3xl" />
+          <span className="text-lg font-semibold">{user?.name}</span>
+        </div>
+      </header>
 
-      <button
-        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        onClick={() => navigate("/create-event")}
-      >
-        Create New Event
-      </button>
-
-      <h2 className="text-xl font-semibold mb-2">Events You Are Managing</h2>
-      <ul className="w-full max-w-md bg-white p-4 shadow-md rounded-md">
-        {events.length === 0 ? (
-          <p className="text-gray-500 text-center">No events created yet.</p>
-        ) : (
-          events.map((event) => (
-            <li key={event.id} className="border-b p-2">
-              <p className="font-semibold">{event.name}</p>
-              <p className="text-sm text-gray-500">
-                {event.venue} - {event.date}
-              </p>
-            </li>
-          ))
-        )}
-      </ul>
+      {/* Table Section */}
+      <div className="p-6">
+        <h2 className="text-2xl font-bold text-gray-700 mb-4">
+          All Submissions
+        </h2>
+        <div className="overflow-x-auto">
+          <table className="w-full bg-white shadow-lg rounded-lg">
+            <thead className="bg-blue-600 text-white">
+              <tr>
+                <th className="p-3 text-left">Customer Name</th>
+                <th className="p-3 text-left">Form Type</th>
+                <th className="p-3 text-left">Submission Date</th>
+                <th className="p-3 text-left">Status</th>
+                <th className="p-3 text-left">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {formSubmissions.length > 0 ? (
+                formSubmissions.map((form, index) => (
+                  <tr key={index} className="border-b">
+                    <td className="p-3 flex items-center space-x-2">
+                      <FaUserCircle className="text-xl" />
+                      <span>{form.customerName}</span>
+                    </td>
+                    <td className="p-3">{form.type}</td>
+                    <td className="p-3">
+                      {new Date(form.date).toLocaleDateString()}
+                    </td>
+                    <td className="p-3">
+                      <span
+                        className={`px-2 py-1 rounded ${
+                          form.status === "Approved"
+                            ? "bg-green-500 text-white"
+                            : form.status === "Pending"
+                            ? "bg-yellow-500 text-white"
+                            : "bg-red-500 text-white"
+                        }`}
+                      >
+                        {form.status}
+                      </span>
+                    </td>
+                    <td className="p-3">
+                      <button
+                        className="px-3 py-1 bg-green-500 text-white rounded-lg mr-2 hover:bg-green-600"
+                        onClick={() => handleStatusChange(form.id, "Approved")}
+                      >
+                        Approve
+                      </button>
+                      <button
+                        className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                        onClick={() => handleStatusChange(form.id, "Rejected")}
+                      >
+                        Reject
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="text-center p-4 text-gray-500">
+                    No submissions found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };

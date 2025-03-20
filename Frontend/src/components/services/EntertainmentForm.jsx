@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 const EntertainmentForm = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const [formData, setFormData] = useState({
     music: "",
@@ -19,7 +21,7 @@ const EntertainmentForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!user) {
@@ -28,7 +30,30 @@ const EntertainmentForm = () => {
       return;
     }
 
-    console.log(formData);
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const response = await fetch(
+        import.meta.env.VITE_SERVER + "/entertainment",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...formData, event: id }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to submit the form. Try again later.");
+      }
+
+      setMessage("Entertainment preferences submitted successfully!");
+      setFormData({ music: "", games: "", play: "", extras: "" });
+    } catch (error) {
+      setMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -86,7 +111,7 @@ const EntertainmentForm = () => {
           type="submit"
           className="w-full mt-6 p-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
         >
-          Submit
+          {loading ? "Submitting..." : "Submit"}
         </button>
       </form>
     </div>

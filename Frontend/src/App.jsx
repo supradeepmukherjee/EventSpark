@@ -137,9 +137,9 @@ function App() {
       {/* Service Pages (No Header needed) */}
       <Route path="/venue-selection" element={<VenueSelectionForm />} />
       <Route path="/invitation-card" element={<InvitationCardForm />} />
-      <Route path="/entertainment" element={<EntertainmentForm />} />
+      <Route path="/entertainment/" element={<EntertainmentForm />} />
       <Route path="/food-and-drinks" element={<FoodAndDrinkForm />} />
-      <Route path="/decoration" element={<DecorationForm />} />
+      <Route path="/decoration/" element={<DecorationForm />} />
       <Route path="/lighting" element={<LightingForm />} />
 
       <Route path="/change-password" element={<ChangePassword />} />
