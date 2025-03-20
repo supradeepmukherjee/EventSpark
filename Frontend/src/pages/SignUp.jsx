@@ -97,8 +97,8 @@ const SignUp = () => {
             onChange={(e) => setRole(e.target.value)}
             className="w-full p-2 mb-4 border rounded bg-white cursor-pointer"
           >
-            <option value="customer">Customer</option>
-            <option value="organizer">Organizer</option>
+            <option value="Customer">Customer</option>
+            <option value="Organizer">Organizer</option>
           </select>
 
           <button
