@@ -30,7 +30,8 @@ const schema = new Schema({
     role: {
         type: String,
         required: true,
-        enum: ['Organizer', 'Customer']
+        enum: ['User', 'Admin'],
+        default: 'User'
     },
     resetPasswordToken: String,
     resetPasswordExpiry: Date,
