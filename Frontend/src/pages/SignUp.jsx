@@ -6,7 +6,6 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState("Customer"); // Default role: Customer
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -30,7 +29,7 @@ const SignUp = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ name, email, password, role }), // Include role
+          body: JSON.stringify({ name, email, password }), // Include role
         }
       );
 
@@ -87,19 +86,6 @@ const SignUp = () => {
             required
             className="w-full p-2 mb-4 border rounded"
           />
-
-          {/* Role Selection Dropdown */}
-          <label className="block text-sm font-semibold mb-1">
-            Select Role:
-          </label>
-          <select
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            className="w-full p-2 mb-4 border rounded bg-white cursor-pointer"
-          >
-            <option value="Customer">Customer</option>
-            <option value="Organizer">Organizer</option>
-          </select>
 
           <button
             type="submit"

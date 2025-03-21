@@ -187,7 +187,6 @@ const DecorationForm = () => {
                 Flower Arrangements:
               </label>
               <select
-                multiple
                 name="flowers"
                 value={formData.flowers}
                 onChange={handleFlowerChange}
@@ -199,9 +198,6 @@ const DecorationForm = () => {
                   </option>
                 ))}
               </select>
-              <p className="text-sm text-gray-500 mt-1">
-                Hold Ctrl (Windows) or Command (Mac) to select multiple.
-              </p>
             </div>
 
             {/* Additional Requests */}

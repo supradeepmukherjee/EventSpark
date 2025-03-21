@@ -92,7 +92,7 @@ const Header = () => {
 
               <Link
                 to={
-                  user.role === "Customer"
+                  user.role === "User"
                     ? "/customer-dashboard"
                     : "/organizer-dashboard"
                 }

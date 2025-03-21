@@ -13,7 +13,8 @@ const SignIn = () => {
   // Redirect if already logged in
   useEffect(() => {
     if (user) {
-      if (user.role === "Organizer") {
+      console.log(user);
+      if (user.role === "Admin") {
         navigate("/organizer-dashboard");
       } else {
         navigate("/customer-dashboard");
@@ -59,7 +60,7 @@ const SignIn = () => {
       });
       // console.log(data.user.role);
       // Redirect based on role immediately
-      if (data.user.role === "Customer") {
+      if (data.user.role === "User") {
         navigate("/customer-dashboard");
       } else {
         navigate("/organizer-dashboard");
