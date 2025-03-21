@@ -113,4 +113,9 @@ const delAccount = tryCatch(async (req, res, next) => {
     res.status(200).json({ success: true, msg: 'Account Deleted Successfully' })
 })
 
-export { login, register, getMyProfile, logOut, updateProfile, updatePassword, forgotPassword, resetPassword, delAccount }
+const allUsers = tryCatch(async (req, res, next) => {
+    const users = await User.find({})
+    res.status(200).json({ success: true, users })
+})
+
+export { login, register, getMyProfile, logOut, updateProfile, updatePassword, forgotPassword, resetPassword, delAccount, allUsers }
