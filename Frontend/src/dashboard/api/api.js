@@ -1,4 +1,72 @@
-const API_BASE_URL = "https://your-backend-api.com/api/admin"; // Replace with actual backend URL
+const API_BASE_URL = import.meta.env.VITE_SERVER;
+
+// 📌 Fetch all payments & transactions
+export const fetchPayments = async (token) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/admin/payments`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch payments");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching payments:", error);
+    return [];
+  }
+};
+
+// 📌 Fetch support queries
+export const fetchSupportQueries = async (token) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/admin/support-queries`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch support queries");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching support queries:", error);
+    return [];
+  }
+};
+
+// 📌 Resolve a support query
+export const resolveSupportQuery = async (queryId, token) => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/admin/support-queries/${queryId}/resolve`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to resolve query");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error resolving support query:", error);
+  }
+};
 
 // Helper function to handle API requests
 const apiRequest = async (endpoint, method = "GET", token, body = null) => {

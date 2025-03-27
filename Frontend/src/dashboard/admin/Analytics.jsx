@@ -21,12 +21,19 @@ const Analytics = () => {
   });
 
   const { user } = useContext(AuthContext);
+  console.log(user);
 
-  // Fetch analytics on component render
   useEffect(() => {
-    fetchAnalyticsData(user.token)
-      .then((data) => setAnalytics(data))
-      .catch((err) => console.error("Error fetching analytics:", err));
+    const fetchData = async () => {
+      try {
+        const data = await fetchAnalyticsData(user.token);
+        setAnalytics(data);
+      } catch (err) {
+        console.error("Error fetching analytics:", err);
+      }
+    };
+
+    fetchData();
   }, [user.token]); // Runs when user.token changes
 
   return (

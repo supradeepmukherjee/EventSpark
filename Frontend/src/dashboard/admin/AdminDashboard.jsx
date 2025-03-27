@@ -3,8 +3,9 @@ import Sidebar from "./Sidebar.jsx";
 import Navbar from "./Navbar.jsx";
 import Users from "./Users.jsx";
 import Analytics from "./Analytics.jsx";
-import Settings from "./Settings.jsx";
 import ManageEvents from "./ManageEvents.jsx";
+import Payments from "./Payments.jsx";
+import SupportQueries from "./SupportQueries.jsx"; // This will handle user queries
 
 const Dashboard = () => (
   <div className="p-5 text-white">
@@ -26,7 +27,9 @@ export default function AdminDashboard() {
           {section === "users" && <Users />}
           {section === "events" && <ManageEvents />}
           {section === "analytics" && <Analytics />}
-          {section === "settings" && <Settings />}
+          {section === "payments" && <Payments />}{" "}
+          {/* Payments & Transactions */}
+          {section === "support" && <SupportQueries />} {/* User Queries */}
         </div>
       </div>
     </div>
