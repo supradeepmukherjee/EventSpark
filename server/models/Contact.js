@@ -21,6 +21,7 @@ const schema = new Schema({
         type: String,
         required: true,
     },
+    reply: String
 },
     { timestamps: true }
 )
