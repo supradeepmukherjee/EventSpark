@@ -1,7 +1,7 @@
 import mongoose, { model, Schema } from 'mongoose'
 
 const schema = new Schema({
-user: {
+    user: {
         ref: 'User',
         type: Schema.Types.ObjectId,
         required: true
@@ -30,6 +30,11 @@ user: {
         type: String,
         required: true,
     }],
+    status: {
+        type: String,
+        enum: ['Pending', 'Approved', 'Rejected'],
+        default: 'Pending'
+    },
     additionalInfo: String,
 },
     { timestamps: true }
