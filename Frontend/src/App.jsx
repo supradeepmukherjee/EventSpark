@@ -22,8 +22,9 @@ import SignUp from "./pages/SignUp.jsx";
 import Status from "./pages/EventStatus.jsx";
 import NotFound from "./pages/NotFound"; // For 404 handling
 import ChangePassword from "./pages/ChangePassword.jsx";
-import OrganizerDashboard from "./dashboard/OrganizerDashboard.jsx";
-import CustomerDashboard from "./dashboard/CustomerDashboard.jsx";
+import AdminDashboard from "./dashboard/admin/AdminDashboard.jsx";
+import CustomerDashboard from "./dashboard/user/CustomerDashboard.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 // ✅ Layout component (Header will be shown on all pages)
 const Layout = ({ children }) => (
@@ -142,9 +143,12 @@ function App() {
       <Route path="/decoration/" element={<DecorationForm />} />
       <Route path="/lighting" element={<LightingForm />} />
 
-      <Route path="/change-password" element={<ChangePassword />} />
-      <Route path="/organizer-dashboard" element={<OrganizerDashboard />} />
-      <Route path="/customer-dashboard" element={<CustomerDashboard />} />
+      {/* Protect  Routes */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/change-password" element={<ChangePassword />} />
+        <Route path="/customer-dashboard" element={<CustomerDashboard />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+      </Route>
 
       {/* 404 Not Found Page */}
       <Route path="*" element={<NotFound />} />

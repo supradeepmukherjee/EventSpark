@@ -15,7 +15,7 @@ const SignIn = () => {
     if (user) {
       console.log(user);
       if (user.role === "Admin") {
-        navigate("/organizer-dashboard");
+        navigate("/admin-dashboard");
       } else {
         navigate("/customer-dashboard");
       }
@@ -63,7 +63,7 @@ const SignIn = () => {
       if (data.user.role === "User") {
         navigate("/customer-dashboard");
       } else {
-        navigate("/organizer-dashboard");
+        navigate("/admin-dashboard");
       }
     } catch (err) {
       setError(err.message);
