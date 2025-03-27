@@ -13,12 +13,7 @@ const SignIn = () => {
   // Redirect if already logged in
   useEffect(() => {
     if (user) {
-      console.log(user);
-      if (user.role === "Admin") {
-        navigate("/admin-dashboard");
-      } else {
-        navigate("/");
-      }
+      navigate(user.role === "Admin" ? "/admin-dashboard" : "/");
     }
   }, [user, navigate]);
 
@@ -33,40 +28,22 @@ const SignIn = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }), // Removed role here
+          body: JSON.stringify({ email, password }),
         }
       );
 
-      if (!response.ok) throw new Error("Invalid email or password");
-
       const data = await response.json();
+      if (!response.ok)
+        throw new Error(data.message || "Invalid email or password");
 
-      // console.log(data.user.name);
       // Store user session
       localStorage.setItem("userToken", data.user.token);
-      localStorage.setItem(
-        "userData",
-        JSON.stringify({
-          name: data.user.name,
-          email: data.user.email,
-          role: data.user.role,
-          _id: data.user._id,
-        })
-      );
+      localStorage.setItem("userData", JSON.stringify(data.user));
 
-      setUser({
-        name: data.user.name,
-        email: data.user.email,
-        role: data.user.role,
-        _id: data.user._id,
-      });
-      // console.log(data.user.role);
-      // Redirect based on role immediately
-      if (data.user.role === "User") {
-        navigate("/");
-      } else {
-        navigate("/admin-dashboard");
-      }
+      setUser(data.user);
+
+      // Redirect based on role
+      navigate(data.user.role === "Admin" ? "/admin-dashboard" : "/");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -81,14 +58,14 @@ const SignIn = () => {
 
         {error && <p className="text-red-500 text-center">{error}</p>}
 
-        <form onSubmit={handleSignIn}>
+        <form onSubmit={handleSignIn} className="space-y-4">
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             required
-            className="w-full p-2 mb-4 border rounded"
+            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
           />
           <input
             type="password"
@@ -96,11 +73,15 @@ const SignIn = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
             required
-            className="w-full p-2 mb-4 border rounded"
+            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
           />
           <button
             type="submit"
-            className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600"
+            className={`w-full py-2 rounded-md transition ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-green-500 text-white hover:bg-green-600"
+            }`}
             disabled={loading}
           >
             {loading ? "Signing In..." : "Sign In"}
@@ -110,7 +91,7 @@ const SignIn = () => {
         <p className="text-center mt-4 text-sm">
           Don't have an account?{" "}
           <span
-            className="text-green-500 cursor-pointer"
+            className="text-green-500 cursor-pointer hover:underline"
             onClick={() => navigate("/sign-up")}
           >
             Sign Up
