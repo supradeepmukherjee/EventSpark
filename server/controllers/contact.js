@@ -11,4 +11,9 @@ const all = tryCatch(async (req, res, next) => {
     res.status(200).json({ success: true, queries })
 })
 
-export { store, all }
+const reply = tryCatch(async (req, res, next) => {
+    const reply = await Contact.findByIdAndUpdate(req.params.id, { reply: req.body.reply })
+    res.status(200).json({ success: true, reply })
+})
+
+export { store, all, reply }
