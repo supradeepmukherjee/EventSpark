@@ -49,21 +49,37 @@ const CreateEvent = () => {
     setMessageVisible(false);
     setError("");
 
+    const token = localStorage.getItem("userToken");
+    // console.log(token);
+    if (!token) {
+      setError("Authentication failed. Please log in again.");
+      navigate("/sign-in");
+      return;
+    }
+
     const eventDetails = {
       ...formData,
-      numberOfGuests: parseInt(formData.numberOfGuests, 10),
+      numberOfGuests: parseInt(formData.numberOfGuests, 10) || 0,
     };
+
+    // console.log("Event Details:", eventDetails);
 
     try {
       const response = await fetch(import.meta.env.VITE_SERVER + "/event", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(eventDetails),
+        credentials: "include",
       });
 
       const data = await response.json();
+      // console.log("Server Response:", data);
 
       if (!response.ok) {
+        console.error("Error details:", data);
         throw new Error(data.message || "Failed to create event");
       }
 

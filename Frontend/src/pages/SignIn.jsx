@@ -27,6 +27,7 @@ const SignIn = () => {
         import.meta.env.VITE_SERVER + "/user/login",
         {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
         }
@@ -37,7 +38,7 @@ const SignIn = () => {
         throw new Error(data.message || "Invalid email or password");
 
       // Store user session
-      localStorage.setItem("userToken", data.user.token);
+      localStorage.setItem("userToken", data.token);
       localStorage.setItem("userData", JSON.stringify(data.user));
 
       setUser(data.user);
