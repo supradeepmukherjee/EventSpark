@@ -6,5 +6,9 @@ const store = tryCatch(async (req, res, next) => {
     res.status(200).json({ success: true, msg: 'Thank you for Contacting Us.' })
 })
 
+const all = tryCatch(async (req, res, next) => {
+    const queries = await Contact.find({})
+    res.status(200).json({ success: true, queries })
+})
 
-export { store }
+export { store, all }
