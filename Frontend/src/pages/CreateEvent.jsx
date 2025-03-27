@@ -7,6 +7,7 @@ const CreateEvent = () => {
   const navigate = useNavigate();
   const [messageVisible, setMessageVisible] = useState(false);
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     venue: "",
@@ -44,13 +45,13 @@ const CreateEvent = () => {
       return;
     }
 
+    setIsSubmitting(true);
     setMessageVisible(false);
     setError("");
 
     const eventDetails = {
       ...formData,
       numberOfGuests: parseInt(formData.numberOfGuests, 10),
-      user: user._id,
     };
 
     try {
@@ -61,9 +62,9 @@ const CreateEvent = () => {
       });
 
       const data = await response.json();
-      console.log(data);
+
       if (!response.ok) {
-        throw new Error("Failed to create event");
+        throw new Error(data.message || "Failed to create event");
       }
 
       setMessageVisible(true);
@@ -78,7 +79,9 @@ const CreateEvent = () => {
       });
     } catch (error) {
       console.error("Error:", error);
-      setError("Something went wrong. Please try again!");
+      setError(error.message || "Something went wrong. Please try again!");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -128,20 +131,7 @@ const CreateEvent = () => {
             <option value="Hooghly">Hooghly</option>
             <option value="Purulia">Purulia</option>
             <option value="Darjeeling">Darjeeling</option>
-            <option value="Other">Other</option>
           </select>
-
-          {formData.venue === "Other" && (
-            <input
-              type="text"
-              name="customVenue"
-              value={formData.customVenue || ""}
-              onChange={handleChange}
-              placeholder="Enter Custom Venue"
-              className="w-full p-2 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          )}
 
           <label className="block">Starting Date:</label>
           <input
@@ -151,8 +141,8 @@ const CreateEvent = () => {
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
             required
-            min={new Date().toISOString().split("T")[0]} // Prevents past dates
-            pattern="\d{4}-\d{2}-\d{2}" // Ensures YYYY-MM-DD format
+            min={new Date().toISOString().split("T")[0]}
+            pattern="\d{4}-\d{2}-\d{2}"
             placeholder="YYYY-MM-DD"
           />
 
@@ -164,8 +154,8 @@ const CreateEvent = () => {
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
             required
-            min={formData.start || new Date().toISOString().split("T")[0]} // Prevents selection before the start date
-            pattern="\d{4}-\d{2}-\d{2}" // Ensures YYYY-MM-DD format
+            min={formData.start || new Date().toISOString().split("T")[0]}
+            pattern="\d{4}-\d{2}-\d{2}"
             placeholder="YYYY-MM-DD"
           />
 
@@ -212,9 +202,14 @@ const CreateEvent = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-700 transition"
+            disabled={isSubmitting}
+            className={`w-full py-2 rounded-md transition ${
+              isSubmitting
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-500 text-white hover:bg-blue-700"
+            }`}
           >
-            Submit
+            {isSubmitting ? "Submitting..." : "Submit"}
           </button>
         </form>
 

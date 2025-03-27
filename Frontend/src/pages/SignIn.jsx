@@ -50,6 +50,7 @@ const SignIn = () => {
           name: data.user.name,
           email: data.user.email,
           role: data.user.role,
+          _id: data.user._id,
         })
       );
 
@@ -57,6 +58,7 @@ const SignIn = () => {
         name: data.user.name,
         email: data.user.email,
         role: data.user.role,
+        _id: data.user._id,
       });
       // console.log(data.user.role);
       // Redirect based on role immediately
