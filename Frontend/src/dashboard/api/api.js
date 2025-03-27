@@ -5,6 +5,7 @@ export const fetchPayments = async (token) => {
   try {
     const response = await fetch(`${API_BASE_URL}/admin/payments`, {
       method: "GET",
+      credentials: "include", // ✅ Include credentials
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -27,6 +28,7 @@ export const fetchSupportQueries = async (token) => {
   try {
     const response = await fetch(`${API_BASE_URL}/admin/support-queries`, {
       method: "GET",
+      credentials: "include", // ✅ Include credentials
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -51,6 +53,7 @@ export const resolveSupportQuery = async (queryId, token) => {
       `${API_BASE_URL}/admin/support-queries/${queryId}/resolve`,
       {
         method: "PATCH",
+        credentials: "include", // ✅ Include credentials
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -72,6 +75,7 @@ export const resolveSupportQuery = async (queryId, token) => {
 const apiRequest = async (endpoint, method = "GET", token, body = null) => {
   const options = {
     method,
+    credentials: "include", // ✅ Include credentials
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -91,7 +95,7 @@ const apiRequest = async (endpoint, method = "GET", token, body = null) => {
 
 /* ============================ USERS ============================ */
 // Fetch all users
-export const fetchUsers = (token) => apiRequest("users", "GET", token);
+export const fetchUsers = (token) => apiRequest("/user/users", "GET", token);
 
 /* ============================ ANALYTICS ============================ */
 // Fetch analytics data
@@ -109,8 +113,8 @@ export const updateAdminSettings = (settings, token) =>
 
 /* ============================ EVENTS ============================ */
 // Fetch all events
-export const fetchEvents = (token) => apiRequest("events", "GET", token);
+export const fetchEvents = (token) => apiRequest("/event/all", "GET", token);
 
 // Update event status (Approve/Reject)
 export const updateEventStatus = (eventId, status, token) =>
-  apiRequest(`events/${eventId}`, "PUT", token, { status });
+  apiRequest(`event/${eventId}`, "PUT", token, { status });

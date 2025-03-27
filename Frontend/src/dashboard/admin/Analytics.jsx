@@ -21,7 +21,7 @@ const Analytics = () => {
   });
 
   const { user } = useContext(AuthContext);
-  console.log(user);
+  // console.log(user);
 
   useEffect(() => {
     const fetchData = async () => {

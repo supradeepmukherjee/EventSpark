@@ -10,6 +10,7 @@ const Payments = () => {
     const getPayments = async () => {
       try {
         const data = await fetchPayments(user.token);
+        console.log(data);
         setPayments(data);
       } catch (error) {
         console.error("Error fetching payments:", error);
