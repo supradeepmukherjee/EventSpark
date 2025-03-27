@@ -118,4 +118,9 @@ const allUsers = tryCatch(async (req, res, next) => {
     res.status(200).json({ success: true, users })
 })
 
-export { login, register, getMyProfile, logOut, updateProfile, updatePassword, forgotPassword, resetPassword, delAccount, allUsers }
+const onlyUsers = tryCatch(async (req, res, next) => {
+    const users = await User.find({ role: 'User' })
+    res.status(200).json({ success: true, users })
+})
+
+export { login, register, getMyProfile, logOut, updateProfile, updatePassword, forgotPassword, resetPassword, delAccount, allUsers, onlyUsers }
