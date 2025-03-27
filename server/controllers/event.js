@@ -2,7 +2,8 @@ import { tryCatch } from '../middlewares/error.js'
 import { Event } from '../models/Event.js'
 
 const create = tryCatch(async (req, res, next) => {
-    const event = await Event.create(req.body)
+    console.log(req.user)
+    const event = await Event.create({ ...req.body, user: req.user })
     res.status(200).json({ success: true, msg: 'Event Created Successfully', event })
 })
 
