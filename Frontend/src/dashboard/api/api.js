@@ -25,10 +25,6 @@ const apiRequest = async (endpoint, method = "GET", token, body = null) => {
 // Fetch all users
 export const fetchUsers = (token) => apiRequest("users", "GET", token);
 
-// Delete a user
-export const deleteUser = (userId, token) =>
-  apiRequest(`users/${userId}`, "DELETE", token);
-
 /* ============================ ANALYTICS ============================ */
 // Fetch analytics data
 export const fetchAnalyticsData = (token) =>

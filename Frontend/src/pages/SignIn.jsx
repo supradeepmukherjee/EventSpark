@@ -17,7 +17,7 @@ const SignIn = () => {
       if (user.role === "Admin") {
         navigate("/admin-dashboard");
       } else {
-        navigate("/customer-dashboard");
+        navigate("/");
       }
     }
   }, [user, navigate]);
@@ -61,7 +61,7 @@ const SignIn = () => {
       // console.log(data.user.role);
       // Redirect based on role immediately
       if (data.user.role === "User") {
-        navigate("/customer-dashboard");
+        navigate("/");
       } else {
         navigate("/admin-dashboard");
       }

@@ -24,12 +24,7 @@ const Sidebar = ({ setSection }) => {
         >
           <Calendar /> Manage Events
         </li>
-        <li
-          onClick={() => setSection("analytics")}
-          className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-700 rounded"
-        >
-          <BarChart /> Analytics
-        </li>
+
         <li
           onClick={() => setSection("settings")}
           className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-700 rounded"

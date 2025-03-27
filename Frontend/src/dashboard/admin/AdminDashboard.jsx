@@ -7,7 +7,10 @@ import Settings from "./Settings.jsx";
 import ManageEvents from "./ManageEvents.jsx";
 
 const Dashboard = () => (
-  <div className="p-5 text-white">Welcome to the Dashboard</div>
+  <div className="p-5 text-white">
+    <h2 className="text-xl font-semibold mb-4">Welcome to the Dashboard</h2>
+    <Analytics /> {/* Analytics will be shown under Welcome to the Dashboard */}
+  </div>
 );
 
 export default function AdminDashboard() {

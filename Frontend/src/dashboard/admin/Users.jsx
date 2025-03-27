@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { fetchUsers, deleteUser } from "../api/api.js";
+import { fetchUsers } from "../api/api.js";
 import { AuthContext } from "../../context/AuthContext";
 
 const Users = () => {
@@ -11,12 +11,6 @@ const Users = () => {
       .then(setUsers)
       .catch((err) => console.error("Error fetching users:", err));
   }, [user.token]);
-
-  const handleDelete = (userId) => {
-    deleteUser(userId, user.token).then(() => {
-      setUsers(users.filter((user) => user.id !== userId));
-    });
-  };
 
   return (
     <div className="p-5">
@@ -34,14 +28,6 @@ const Users = () => {
             <tr key={user.id} className="border-b">
               <td className="p-3">{user.name}</td>
               <td className="p-3">{user.email}</td>
-              <td className="p-3">
-                <button
-                  onClick={() => handleDelete(user.id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded"
-                >
-                  Delete
-                </button>
-              </td>
             </tr>
           ))}
         </tbody>
