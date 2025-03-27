@@ -94,7 +94,7 @@ const Header = () => {
                 to={
                   user.role === "User"
                     ? "/customer-dashboard"
-                    : "/organizer-dashboard"
+                    : "/admin-dashboard"
                 }
                 className="block px-4 py-2 hover:bg-gray-100"
               >
