@@ -12,7 +12,10 @@ const getEventDetails = tryCatch(async (req, res, next) => {
 })
 
 const allEvents = tryCatch(async (req, res, next) => {
-    const events = await Event.find({})
+    const query = {}
+    const { status } = req.query
+    if (status) query.status = status
+    const events = await Event.find(query)
     res.status(200).json({ success: true, events })
 })
 
