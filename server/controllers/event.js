@@ -16,7 +16,7 @@ const allEvents = tryCatch(async (req, res, next) => {
     const query = {}
     const { status } = req.query
     if (status) query.status = status
-    const events = await Event.find(query)
+    const events = await Event.find(query).populate('user')
     res.status(200).json({ success: true, events })
 })
 
