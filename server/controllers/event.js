@@ -26,4 +26,9 @@ const eventsByUser = tryCatch(async (req, res, next) => {
     res.status(200).json({ success: true, events })
 })
 
-export { create, getEventDetails, allEvents, eventsByUser }
+const updateStatus = tryCatch(async (req, res, next) => {
+    const event = await Event.findByIdAndUpdate(req.params.id, { status: req.body.status })
+    res.status(200).json({ success: true, event })
+})
+
+export { create, getEventDetails, allEvents, eventsByUser, updateStatus }
