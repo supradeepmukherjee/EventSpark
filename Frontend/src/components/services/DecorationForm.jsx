@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { toast } from 'react-toastify'
 
 const themeData = {
   classic: [
@@ -44,6 +46,7 @@ const DecorationForm = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   // const { id } = useParams();
+  const [event, setEvent] = useState('')
 
   const [formData, setFormData] = useState({
     theme: "classic",
@@ -89,7 +92,7 @@ const DecorationForm = () => {
 
     // Creating the final data object
     const finalData = {
-      // event: id,
+      event,
       theme: formData.theme,
       color: formData.color,
       flowers: formData.flowers,
@@ -100,24 +103,20 @@ const DecorationForm = () => {
 
     console.log("Final Submitted Data:", finalData); // Debugging
 
+    toast.info('Submitting. Please Wait')
     try {
-      const response = await fetch(
-        import.meta.env.VITE_SERVER + "/decoration",
+      const { data } = await axios.post(import.meta.env.VITE_SERVER + "/decoration",
+        finalData,
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(finalData),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to submit data");
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        })
+      console.log(data)
+      toast.dismiss()
+      if (data?.success) toast.success('Details Submitted Successfully')
+      else {
+        if (data?.msg) toast.error(data?.msg)
       }
-
-      const result = await response.json();
-      alert("Submission Successful! 🎉");
 
       // Reset form after submission
       setFormData({
@@ -132,9 +131,18 @@ const DecorationForm = () => {
       setShowPreviews(false); // Go back to the form
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("Something went wrong. Please try again!");
+      toast.dismiss()
+      toast.error("Something went wrong. Please try again!");
     }
   };
+
+  useEffect(() => {
+    const f = async () => {
+      const { data } = await axios.get(import.meta.env.VITE_SERVER + "/event/by-account", { withCredentials: true })
+      setEvent(data?.event)
+    }
+    f()
+  }, [])
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100 p-4">
@@ -232,11 +240,10 @@ const DecorationForm = () => {
             {themeData[formData.theme].map((item, index) => (
               <div
                 key={index}
-                className={`border-2 rounded-lg cursor-pointer p-2 ${
-                  formData.selectedImage === item.image
-                    ? "border-pink-600"
-                    : "border-gray-300"
-                }`}
+                className={`border-2 rounded-lg cursor-pointer p-2 ${formData.selectedImage === item.image
+                  ? "border-pink-600"
+                  : "border-gray-300"
+                  }`}
                 onClick={() =>
                   setFormData({
                     ...formData,
