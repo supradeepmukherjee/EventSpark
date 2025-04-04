@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import axios from "axios";
 
 const EntertainmentForm = () => {
   const { user } = useContext(AuthContext);
@@ -33,28 +35,40 @@ const EntertainmentForm = () => {
     setLoading(true);
     setMessage("");
 
+    toast.info('Submitting. Please Wait')
     try {
-      const response = await fetch(
-        import.meta.env.VITE_SERVER + "/entertainment",
+      console.log(formData)
+      const { data } = await axios.post(import.meta.env.VITE_SERVER + "/entertainment",
+        formData,
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...formData, event: id }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to submit the form. Try again later.");
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        })
+      console.log(data)
+      toast.dismiss()
+      if (data?.success) toast.success('Details Submitted Successfully')
+      else {
+        if (data?.msg) toast.error(data?.msg)
       }
 
       setMessage("Entertainment preferences submitted successfully!");
       setFormData({ music: "", games: "", play: "", extras: "" });
     } catch (error) {
       setMessage(error.message);
+      toast.dismiss()
+      toast.error("Something went wrong. Please try again!");
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const f = async () => {
+      const { data } = await axios.get(import.meta.env.VITE_SERVER + "/event/by-account", { withCredentials: true })
+      setFormData({ ...formData, event: data?.event })
+    }
+    f()
+  }, [])
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-lg max-w-md mx-auto mt-10">
@@ -114,6 +128,7 @@ const EntertainmentForm = () => {
           {loading ? "Submitting..." : "Submit"}
         </button>
       </form>
+      <ToastContainer />
     </div>
   );
 };

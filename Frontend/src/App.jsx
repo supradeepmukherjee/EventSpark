@@ -8,6 +8,7 @@ import { Pricing } from "./pages/Pricing.jsx";
 import { ContactUs } from "./pages/ContactUs.jsx";
 import Reviews from "./pages/Review";
 import { Footer } from "./components/Footer.jsx";
+import "react-toastify/dist/ReactToastify.css";
 
 import VenueSelectionForm from "./components/services/VenueSelectionForm";
 import InvitationCardForm from "./components/services/InvitationCardForm";
