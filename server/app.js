@@ -12,12 +12,7 @@ if (process.env.NODE_ENV !== "production") config({ path: "./.env" })
 
 app.use(morgan("dev"))
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    //credentials: true,
-  })
-)
+app.use(cors))
 
 app.use(json({ limit: "50mb" }))
 app.use(cookieParser())
