@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import axios from "axios";
 
 const VenueSelectionForm = () => {
   const { user } = useContext(AuthContext);
@@ -18,7 +20,7 @@ const VenueSelectionForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
     if (!user) {
@@ -27,6 +29,25 @@ const VenueSelectionForm = () => {
       return;
     }
     console.log(formData);
+    toast.info('Submitting. Please Wait')
+    try {
+      const { data } = await axios.post(import.meta.env.VITE_SERVER + "/venue",
+        formData,
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        })
+      console.log(data)
+      toast.dismiss()
+      if (data?.success) toast.success('Details Submitted Successfully')
+      else {
+        if (data?.msg) toast.error(data?.msg)
+      }
+
+    } catch (error) {
+      toast.dismiss()
+      toast.error("Something went wrong. Please try again!");
+    }
   };
 
   return (
@@ -95,7 +116,8 @@ const VenueSelectionForm = () => {
           Submit
         </button>
       </form>
-    </div>
+      <ToastContainer />
+      </div>
   );
 };
 
