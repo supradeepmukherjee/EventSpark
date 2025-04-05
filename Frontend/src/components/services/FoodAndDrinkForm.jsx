@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import axios from "axios";
 
 const FoodAndDrinkForm = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    eventName: "",
     guests: "",
     date: "",
     time: "",
@@ -51,7 +52,7 @@ const FoodAndDrinkForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!user) {
@@ -61,6 +62,25 @@ const FoodAndDrinkForm = () => {
     }
 
     console.log(formData);
+    toast.info('Submitting. Please Wait')
+    try {
+      const { data } = await axios.post(import.meta.env.VITE_SERVER + "/entertainment",
+        formData,
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        })
+      console.log(data)
+      toast.dismiss()
+      if (data?.success) toast.success('Details Submitted Successfully')
+      else {
+        if (data?.msg) toast.error(data?.msg)
+      }
+
+    } catch (error) {
+      toast.dismiss()
+      toast.error("Something went wrong. Please try again!");
+    } 
   };
 
   return (
@@ -70,14 +90,6 @@ const FoodAndDrinkForm = () => {
       </h2>
       <form onSubmit={handleSubmit}>
         <label className="block font-semibold mt-4">Name of the Event *</label>
-        <input
-          type="text"
-          name="eventName"
-          className="w-full p-2 border rounded-lg mt-2"
-          value={formData.eventName}
-          onChange={handleChange}
-          required
-        />
 
         <label className="block font-semibold mt-4">Number of Guests *</label>
         <input
@@ -182,7 +194,8 @@ const FoodAndDrinkForm = () => {
           Submit
         </button>
       </form>
-    </div>
+      <ToastContainer />
+      </div>
   );
 };
 

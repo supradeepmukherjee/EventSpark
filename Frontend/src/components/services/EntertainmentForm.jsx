@@ -32,6 +32,10 @@ const EntertainmentForm = () => {
       return;
     }
 
+    const { music, games, play, extras, } = formData
+
+    if (!(music && games && play)) return toast.error('Please fill in all the required fields')
+
     setLoading(true);
     setMessage("");
 
