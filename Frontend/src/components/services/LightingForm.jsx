@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import axios from "axios";
 
 const LightingForm = () => {
   const { user } = useContext(AuthContext);
@@ -19,7 +21,7 @@ const LightingForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!user) {
@@ -27,8 +29,27 @@ const LightingForm = () => {
       navigate("/sign-in");
       return;
     }
+    
     console.log("Lighting Form Data:", formData);
-    // Add form submission logic here
+    toast.info('Submitting. Please Wait')
+    try {
+      const { data } = await axios.post(import.meta.env.VITE_SERVER + "/lighting",
+        formData,
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        })
+      console.log(data)
+      toast.dismiss()
+      if (data?.success) toast.success('Details Submitted Successfully')
+      else {
+        if (data?.msg) toast.error(data?.msg)
+      }
+
+    } catch (error) {
+      toast.dismiss()
+      toast.error("Something went wrong. Please try again!");
+    }
   };
 
   return (
@@ -102,7 +123,8 @@ const LightingForm = () => {
           </button>
         </form>
       </div>
-    </div>
+      <ToastContainer />
+      </div>
   );
 };
 

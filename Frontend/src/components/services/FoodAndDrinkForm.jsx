@@ -64,7 +64,7 @@ const FoodAndDrinkForm = () => {
     console.log(formData);
     toast.info('Submitting. Please Wait')
     try {
-      const { data } = await axios.post(import.meta.env.VITE_SERVER + "/entertainment",
+      const { data } = await axios.post(import.meta.env.VITE_SERVER + "/food",
         formData,
         {
           headers: { 'Content-Type': 'application/json' },
