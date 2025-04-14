@@ -47,10 +47,10 @@ const analytics = tryCatch(async (req, res, next) => {
     let activeEvents = 0
 
     totalEvents.forEach(e => {
-        const startDate = e.startDate.setHours(0, 0, 0, 0);
-        const endDate = e.endDate.setHours(0, 0, 0, 0);
+        // const startDate = e.startDate.setHours(0, 0, 0, 0);
+        // const endDate = e.endDate.setHours(0, 0, 0, 0);
 
-        if (today >= startDate && today <= endDate) activeEvents++
+        // if (today >= startDate && today <= endDate) activeEvents++
     });
 
     res.status(200).json({ totalUsers, totalEvents: totalEvents.length, activeEvents, rejectedEvents, approvedEvents, pendingEvents })
