@@ -1,5 +1,6 @@
 import { tryCatch } from '../middlewares/error.js'
 import { Event } from '../models/Event.js'
+import { User } from '../models/User.js'
 
 const create = tryCatch(async (req, res, next) => {
     console.log(req.user)
@@ -30,4 +31,29 @@ const updateStatus = tryCatch(async (req, res, next) => {
     res.status(200).json({ success: true, event })
 })
 
-export { create, getEventDetails, allEvents, eventsByUser, updateStatus }
+const analytics = tryCatch(async (req, res, next) => {
+    const [totalUsers, totalEvents] = await Promise.all([
+        User.countDocuments({}),
+        Event.find({})
+    ])
+
+    const pendingEvents = totalEvents.filter(e => e.status === 'Pending').length
+    const approvedEvents = totalEvents.filter(e => e.status === 'Approved').length
+    const rejectedEvents = totalEvents.filter(e => e.status === 'Rejected').length
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    let activeEvents = 0
+
+    totalEvents.forEach(e => {
+        const startDate = e.startDate.setHours(0, 0, 0, 0);
+        const endDate = e.endDate.setHours(0, 0, 0, 0);
+
+        if (today >= startDate && today <= endDate) activeEvents++
+    });
+
+    res.status(200).json({ totalUsers, totalEvents: totalEvents.length, activeEvents, rejectedEvents, approvedEvents, pendingEvents })
+})
+
+export { create, getEventDetails, allEvents, eventsByUser, updateStatus, analytics }
