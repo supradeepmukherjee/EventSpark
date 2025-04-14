@@ -8,6 +8,6 @@ app.get('/', getEventDetails)
 app.get('/all', allEvents)
 app.get('/by-account', eventsByUser)
 app.put('/:id', updateStatus)
-app.put('/analytics', analytics)
+app.get('/analytics', analytics)
 
 export default app
