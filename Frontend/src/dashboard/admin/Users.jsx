@@ -50,9 +50,10 @@ const Users = () => {
               key={user._id}
               className="bg-white shadow-lg rounded-lg p-5 flex flex-col items-center text-center hover:shadow-xl transition-shadow"
             >
-              <div className="w-16 h-16 bg-blue-500 text-white rounded-full flex items-center justify-center text-xl font-bold">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-full flex items-center justify-center text-2xl font-semibold shadow-lg hover:scale-105 transform transition duration-300 ease-in-out">
                 {user.name.charAt(0).toUpperCase()}
               </div>
+
               <h3 className="mt-3 text-xl font-semibold text-gray-800">
                 {user.name}
               </h3>
