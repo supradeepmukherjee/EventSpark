@@ -33,7 +33,7 @@ const updateStatus = tryCatch(async (req, res, next) => {
 
 const analytics = tryCatch(async (req, res, next) => {
     const [totalUsers, totalEvents] = await Promise.all([
-        User.countDocuments({}),
+        User.countDocuments({role:'User'}),
         Event.find({})
     ])
 
