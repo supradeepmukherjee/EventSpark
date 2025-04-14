@@ -13,6 +13,11 @@ const all = tryCatch(async (req, res, next) => {
     res.status(200).json({ success: true, queries })
 })
 
+const user = tryCatch(async (req, res, next) => {
+    const queries = await Contact.find({ user: req.user })
+    res.status(200).json({ success: true, queries })
+})
+
 const reply = tryCatch(async (req, res, next) => {
     const reply = await Contact.findByIdAndUpdate(
         req.params.id,
@@ -25,4 +30,4 @@ const reply = tryCatch(async (req, res, next) => {
     res.status(200).json({ success: true, reply })
 })
 
-export { store, all, reply }
+export { store, all, reply, user }
