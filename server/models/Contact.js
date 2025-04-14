@@ -1,6 +1,10 @@
 import mongoose, { model, Schema } from 'mongoose'
 
 const schema = new Schema({
+    user: {
+        ref: 'User',
+        type: Schema.Types.ObjectId,
+    },
     name: {
         type: String,
         required: true,
