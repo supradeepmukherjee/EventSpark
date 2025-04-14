@@ -12,7 +12,14 @@ const all = tryCatch(async (req, res, next) => {
 })
 
 const reply = tryCatch(async (req, res, next) => {
-    const reply = await Contact.findByIdAndUpdate(req.params.id, { reply: req.body.reply })
+    const reply = await Contact.findByIdAndUpdate(
+        req.params.id,
+        {
+            reply: req.body.reply,
+            isResolved: true
+        },
+        { new: true }
+    )
     res.status(200).json({ success: true, reply })
 })
 
