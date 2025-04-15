@@ -2,12 +2,19 @@ import { tryCatch } from '../middlewares/error.js'
 import { Contact } from '../models/Contact.js'
 
 const store = tryCatch(async (req, res, next) => {
-    await Contact.create(req.body)
+    const q = req.body
+    if (req.user) q = { ...q, user: req.user }
+    await Contact.create(q)
     res.status(200).json({ success: true, msg: 'Thank you for Contacting Us.' })
 })
 
 const all = tryCatch(async (req, res, next) => {
     const queries = await Contact.find({})
+    res.status(200).json({ success: true, queries })
+})
+
+const user = tryCatch(async (req, res, next) => {
+    const queries = await Contact.find({ user: req.user })
     res.status(200).json({ success: true, queries })
 })
 
@@ -23,4 +30,4 @@ const reply = tryCatch(async (req, res, next) => {
     res.status(200).json({ success: true, reply })
 })
 
-export { store, all, reply }
+export { store, all, reply, user }
