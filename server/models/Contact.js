@@ -1,15 +1,10 @@
 import mongoose, { model, Schema } from "mongoose";
 
-<<<<<<< HEAD
-const schema = new Schema(
-  {
-=======
 const schema = new Schema({
     user: {
         ref: 'User',
         type: Schema.Types.ObjectId,
     },
->>>>>>> 18e2cdf4a89ab9d12efe2a788e28d064331f3950
     name: {
       type: String,
       required: true,
