@@ -65,7 +65,7 @@ const updateProfile = tryCatch(async (req, res, next) => {
 })
 
 const updatePassword = tryCatch(async (req, res, next) => {
-    const { old, newP } = req.body
+    const { oldPassword:old, newPassword: newP } = req.body
     const user = await User.findById(req.user).select('+password')
     if (!user) return next(new ErrorHandler(404, 'User not found'))
     if (!(old && newP)) return next(new ErrorHandler(400, 'Please provide old & new password'))
