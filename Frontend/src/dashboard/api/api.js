@@ -26,7 +26,7 @@ export const fetchPayments = async (token) => {
 // 📌 Fetch support queries
 export const fetchSupportQueries = async (token) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/admin/support-queries`, {
+    const response = await fetch(`${import.meta.env.VITE_SERVER}/contact`, {
       method: "GET",
       credentials: "include", // ✅ Include credentials
       headers: {
@@ -46,18 +46,18 @@ export const fetchSupportQueries = async (token) => {
   }
 };
 
-// 📌 Resolve a support query
-export const resolveSupportQuery = async (queryId, token) => {
+export const resolveSupportQuery = async (queryId, feedback, token) => {
   try {
     const response = await fetch(
-      `${API_BASE_URL}/admin/support-queries/${queryId}/resolve`,
+      `${import.meta.env.VITE_SERVER}/contact/${queryId}`,
       {
-        method: "PATCH",
-        credentials: "include", // ✅ Include credentials
+        method: "PUT",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({ reply: feedback }), // ✅ Send feedback
       }
     );
 
@@ -100,7 +100,7 @@ export const fetchUsers = (token) => apiRequest("/user/users", "GET", token);
 /* ============================ ANALYTICS ============================ */
 // Fetch analytics data
 export const fetchAnalyticsData = (token) =>
-  apiRequest("analytics", "GET", token);
+  apiRequest("/event/analytics", "GET", token);
 
 /* ============================ SETTINGS ============================ */
 // Fetch admin settings

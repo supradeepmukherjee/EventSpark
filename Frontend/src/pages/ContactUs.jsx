@@ -6,7 +6,7 @@ export const ContactUs = () => {
     email: "",
     phone: "",
     subject: "",
-    message: "",
+    msg: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -24,7 +24,7 @@ export const ContactUs = () => {
     if (!phoneRegex.test(formData.phone))
       newErrors.phone = "Enter a 10-digit phone number.";
     if (!formData.subject.trim()) newErrors.subject = "Subject is required.";
-    if (!formData.message.trim()) newErrors.message = "Message is required.";
+    if (!formData.msg.trim()) newErrors.message = "Message is required.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -62,7 +62,7 @@ export const ContactUs = () => {
           email: "",
           phone: "",
           subject: "",
-          message: "",
+          msg: "",
         });
       } else {
         alert("Something went wrong. Please try again.");
@@ -147,8 +147,8 @@ export const ContactUs = () => {
 
         <div className="mt-4">
           <textarea
-            name="message"
-            value={formData.message}
+            name="msg"
+            value={formData.msg}
             onChange={handleChange}
             placeholder="Your Message"
             className="p-2 bg-gray-700 text-white rounded w-full h-32"

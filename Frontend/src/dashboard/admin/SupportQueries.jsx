@@ -1,30 +1,46 @@
 import { useState, useEffect, useContext } from "react";
-import { fetchSupportQueries, resolveSupportQuery } from "../api/api.js"; // API functions
+import { fetchSupportQueries, resolveSupportQuery } from "../api/api.js";
 import { AuthContext } from "../../context/AuthContext";
 
 const SupportQueries = () => {
   const [queries, setQueries] = useState([]);
   const { user } = useContext(AuthContext);
-  const [feedback, setFeedback] = useState({}); // Store feedback for each query
+  const [feedback, setFeedback] = useState({});
 
-  useEffect(() => {
-    const getQueries = async () => {
-      try {
-        const data = await fetchSupportQueries(user.token);
-        setQueries(data);
-      } catch (error) {
-        console.error("Error fetching support queries:", error);
-      }
-    };
+  useEffect(
+    () => {
+      const getQueries = async () => {
+        try {
+          const data = await fetchSupportQueries(user.token);
+          setQueries(data.queries);
+        } catch (error) {
+          console.error("Error fetching support queries:", error);
+        }
+      };
 
-    getQueries();
-  }, [user.token]);
+      getQueries();
+    },
+    [user.token],
+    feedback
+  );
 
   const handleResolve = async (queryId) => {
     try {
       const adminFeedback = feedback[queryId] || "";
+      if (!adminFeedback.trim()) {
+        alert("Please provide feedback before submitting.");
+        return;
+      }
       await resolveSupportQuery(queryId, adminFeedback, user.token);
-      setQueries(queries.filter((query) => query.id !== queryId));
+
+      const updatedQueries = await fetchSupportQueries(user.token);
+      setQueries(updatedQueries.queries);
+
+      setFeedback((prev) => {
+        const updated = { ...prev };
+        delete updated[queryId];
+        return updated;
+      });
     } catch (error) {
       console.error("Error resolving query:", error);
     }
@@ -43,32 +59,52 @@ const SupportQueries = () => {
               <th className="p-3">Email</th>
               <th className="p-3">Subject</th>
               <th className="p-3">Message</th>
+              <th className="p-3">Admin Feedback</th>
               <th className="p-3">Action</th>
             </tr>
           </thead>
           <tbody>
             {queries.map((query) => (
-              <tr key={query.id} className="border-b text-center">
-                <td className="p-3">{query.user}</td>
+              <tr key={query._id} className="border-b text-center">
+                <td className="p-3">{query.name}</td>
                 <td className="p-3">{query.email}</td>
                 <td className="p-3">{query.subject}</td>
-                <td className="p-3">{query.message}</td>
-                <td className="p-3 flex gap-2 justify-center">
-                  <input
-                    type="text"
-                    placeholder="Provide feedback..."
-                    className="border rounded p-1 w-48"
-                    value={feedback[query.id] || ""}
-                    onChange={(e) =>
-                      setFeedback({ ...feedback, [query.id]: e.target.value })
-                    }
-                  />
-                  <button
-                    onClick={() => handleResolve(query.id)}
-                    className="bg-green-500 text-white px-3 py-1 rounded"
-                  >
-                    Submit Feedback
-                  </button>
+                <td className="p-3">{query.msg}</td>
+                <td className="p-3">
+                  {query.isResolved ? (
+                    <input
+                      type="text"
+                      value={query.adminFeedback}
+                      disabled
+                      className="border rounded p-1 w-48 bg-gray-100 text-gray-700"
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      placeholder="Provide feedback..."
+                      className="border rounded p-1 w-48"
+                      value={feedback[query._id] || ""}
+                      onChange={(e) =>
+                        setFeedback({
+                          ...feedback,
+                          [query._id]: e.target.value,
+                        })
+                      }
+                    />
+                  )}
+                </td>
+                <td className="p-3">
+                  {!query.isResolved && (
+                    <button
+                      onClick={() => handleResolve(query._id)}
+                      className="bg-green-500 text-white px-3 py-1 rounded cursor-pointer"
+                    >
+                      Submit Feedback
+                    </button>
+                  )}
+                  {query.isResolved && (
+                    <span className="text-green-600 font-medium">Resolved</span>
+                  )}
                 </td>
               </tr>
             ))}
