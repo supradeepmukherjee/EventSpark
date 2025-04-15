@@ -160,7 +160,7 @@ export const ContactUs = () => {
 
         <button
           type="submit"
-          className="w-full mt-4 bg-blue-500 py-2 rounded-lg text-white hover:bg-blue-700 transition-all duration-300 disabled:opacity-50"
+          className="w-full mt-4 bg-blue-500 py-2 cursor-pointer rounded-lg text-white hover:bg-blue-700 transition-all duration-300 disabled:opacity-50"
           disabled={loading}
         >
           {loading ? "Sending..." : "Send Message"}

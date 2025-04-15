@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import signupImg from "/images/sign-up.jpg";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -26,19 +27,15 @@ const SignUp = () => {
         import.meta.env.VITE_SERVER + "/user/register",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name, email, password }), // Include role
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password }),
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to register. Try again!");
-      }
+      if (!response.ok) throw new Error("Failed to register. Try again!");
 
       alert("Sign Up Successful! 🎉");
-      navigate("/sign-in"); // Redirect to Sign In page
+      navigate("/sign-in");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -47,64 +44,84 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-semibold text-center mb-4">Sign Up</h2>
+    <div className="flex h-screen overflow-hidden">
+      {/* Left Side: Image */}
+      <div className="hidden md:block md:w-1/2 h-full">
+        <img
+          src={signupImg}
+          alt="Sign Up Visual"
+          className="w-full h-full object-cover"
+        />
+      </div>
 
-        {error && <p className="text-red-500 text-center">{error}</p>}
+      {/* Right Side: Form */}
+      <div className="w-full md:w-1/2 flex items-center justify-center bg-gradient-to-br from-green-100 via-white to-green-200">
+        <div className="bg-white p-8 md:p-10 rounded-lg shadow-md w-full max-w-md">
+          <h2 className="text-3xl font-bold text-green-600 text-center mb-6">
+            Create Your Account
+          </h2>
 
-        <form onSubmit={handleSignUp}>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Full Name"
-            required
-            className="w-full p-2 mb-4 border rounded"
-          />
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            required
-            className="w-full p-2 mb-4 border rounded"
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-            className="w-full p-2 mb-4 border rounded"
-          />
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Confirm Password"
-            required
-            className="w-full p-2 mb-4 border rounded"
-          />
+          {error && (
+            <p className="text-red-500 text-sm text-center mb-3">{error}</p>
+          )}
 
-          <button
-            type="submit"
-            className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600"
-            disabled={loading}
-          >
-            {loading ? "Signing Up..." : "Sign Up"}
-          </button>
-        </form>
+          <form onSubmit={handleSignUp} className="space-y-4">
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Full Name"
+              required
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              required
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              required
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            />
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirm Password"
+              required
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            />
 
-        <p className="text-center mt-4 text-sm">
-          Already have an account?{" "}
-          <span
-            className="text-green-500 cursor-pointer"
-            onClick={() => navigate("/sign-in")}
-          >
-            Sign In
-          </span>
-        </p>
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full py-3 rounded-md font-semibold transition ${
+                loading
+                  ? "bg-gray-400 cursor-not-allowed text-white"
+                  : "bg-green-500 hover:bg-green-600 text-white"
+              }`}
+            >
+              {loading ? "Signing Up..." : "Sign Up"}
+            </button>
+          </form>
+
+          <p className="text-center mt-5 text-sm text-gray-600">
+            Already have an account?{" "}
+            <span
+              className="text-green-500 font-medium cursor-pointer hover:underline"
+              onClick={() => navigate("/sign-in")}
+            >
+              Sign In
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );

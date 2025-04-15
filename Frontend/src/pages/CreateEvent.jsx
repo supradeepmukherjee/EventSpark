@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import createEventImg from "/images/create-event.jpg";
 
 const CreateEvent = () => {
   const { user } = useContext(AuthContext);
@@ -50,7 +51,6 @@ const CreateEvent = () => {
     setError("");
 
     const token = localStorage.getItem("userToken");
-    // console.log(token);
     if (!token) {
       setError("Authentication failed. Please log in again.");
       navigate("/sign-in");
@@ -61,8 +61,6 @@ const CreateEvent = () => {
       ...formData,
       numberOfGuests: parseInt(formData.numberOfGuests, 10) || 0,
     };
-
-    // console.log("Event Details:", eventDetails);
 
     try {
       const response = await fetch(import.meta.env.VITE_SERVER + "/event", {
@@ -76,7 +74,6 @@ const CreateEvent = () => {
       });
 
       const data = await response.json();
-      // console.log("Server Response:", data);
 
       if (!response.ok) {
         console.error("Error details:", data);
@@ -102,138 +99,165 @@ const CreateEvent = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-bold text-blue-500 text-center mb-4">
-          Event Creation Form
-        </h2>
-
-        {error && <p className="text-red-500 text-center mb-2">{error}</p>}
-
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <label className="block">Name of the Event:</label>
-          <select
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-            required
-          >
-            <option value="" disabled>
-              Select an Event
-            </option>
-            <option value="Wedding">Wedding</option>
-            <option value="Birthday Party">Birthday Party</option>
-            <option value="Corporate Meeting">Corporate Meeting</option>
-            <option value="Conference">Conference</option>
-            <option value="Concert">Concert</option>
-            <option value="Exhibition">Exhibition</option>
-            <option value="Workshop">Workshop</option>
-            <option value="Festival Celebration">Festival Celebration</option>
-          </select>
-
-          <label className="block">Venue:</label>
-          <select
-            name="venue"
-            value={formData.venue}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-            required
-          >
-            <option value="">Select Venue</option>
-            <option value="Kolkata">Kolkata</option>
-            <option value="Midnapore">Midnapore</option>
-            <option value="Contai">Contai</option>
-            <option value="Hooghly">Hooghly</option>
-            <option value="Purulia">Purulia</option>
-            <option value="Darjeeling">Darjeeling</option>
-          </select>
-
-          <label className="block">Starting Date:</label>
-          <input
-            type="date"
-            name="start"
-            value={formData.start}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-            required
-            min={new Date().toISOString().split("T")[0]}
-            pattern="\d{4}-\d{2}-\d{2}"
-            placeholder="YYYY-MM-DD"
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 py-10 px-4">
+      <div className="max-w-6xl w-full bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+        {/* Left - Image */}
+        <div className="md:w-1/2 h-64 md:h-auto">
+          <img
+            src={createEventImg}
+            alt="Event"
+            className="w-full h-full object-cover"
           />
+        </div>
 
-          <label className="block">Ending Date:</label>
-          <input
-            type="date"
-            name="end"
-            value={formData.end}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-            required
-            min={formData.start || new Date().toISOString().split("T")[0]}
-            pattern="\d{4}-\d{2}-\d{2}"
-            placeholder="YYYY-MM-DD"
-          />
+        {/* Right - Form */}
+        <div className="md:w-1/2 p-6 sm:p-10">
+          <h2 className="text-3xl font-bold text-purple-700 text-center mb-6">
+            Create Your Event
+          </h2>
 
-          <label className="block">Number of Guests:</label>
-          <input
-            type="number"
-            name="numberOfGuests"
-            value={formData.numberOfGuests}
-            onChange={handleChange}
-            placeholder="Enter Number of Guests"
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-            required
-            min="1"
-            max="1000"
-          />
+          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
-          <label className="block">Required Services:</label>
-          <div className="flex flex-wrap gap-3">
-            {["Catering", "Decoration", "Music", "Lighting"].map(
-              (service, index) => (
-                <label key={index} className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    value={service}
-                    checked={formData.services.includes(service)}
-                    onChange={handleServiceChange}
-                    className="form-checkbox text-blue-500"
-                  />
-                  <span>{service}</span>
-                </label>
-              )
-            )}
-          </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block mb-1 font-medium">Event Name</label>
+              <select
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500"
+                required
+              >
+                <option value="" disabled>
+                  Select an Event
+                </option>
+                <option value="Wedding">Wedding</option>
+                <option value="Birthday Party">Birthday Party</option>
+                <option value="Corporate Meeting">Corporate Meeting</option>
+                <option value="Conference">Conference</option>
+                <option value="Concert">Concert</option>
+                <option value="Exhibition">Exhibition</option>
+                <option value="Workshop">Workshop</option>
+                <option value="Festival Celebration">
+                  Festival Celebration
+                </option>
+              </select>
+            </div>
 
-          <label className="block">Additional Information:</label>
-          <textarea
-            name="additionalInfo"
-            value={formData.additionalInfo}
-            onChange={handleChange}
-            placeholder="Enter any additional details"
-            rows="4"
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-          ></textarea>
+            <div>
+              <label className="block mb-1 font-medium">Venue</label>
+              <select
+                name="venue"
+                value={formData.venue}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500"
+                required
+              >
+                <option value="">Select Venue</option>
+                <option value="Kolkata">Kolkata</option>
+                <option value="Midnapore">Midnapore</option>
+                <option value="Contai">Contai</option>
+                <option value="Hooghly">Hooghly</option>
+                <option value="Purulia">Purulia</option>
+                <option value="Darjeeling">Darjeeling</option>
+              </select>
+            </div>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`w-full py-2 rounded-md transition ${
-              isSubmitting
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-500 text-white hover:bg-blue-700"
-            }`}
-          >
-            {isSubmitting ? "Submitting..." : "Submit"}
-          </button>
-        </form>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block mb-1 font-medium">Start Date</label>
+                <input
+                  type="date"
+                  name="start"
+                  value={formData.start}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500"
+                  required
+                  min={new Date().toISOString().split("T")[0]}
+                />
+              </div>
+              <div>
+                <label className="block mb-1 font-medium">End Date</label>
+                <input
+                  type="date"
+                  name="end"
+                  value={formData.end}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500"
+                  required
+                  min={formData.start || new Date().toISOString().split("T")[0]}
+                />
+              </div>
+            </div>
 
-        {messageVisible && (
-          <p className="mt-4 text-lg font-semibold text-blue-500 text-center">
-            Your event has been created successfully.
-          </p>
-        )}
+            <div>
+              <label className="block mb-1 font-medium">Number of Guests</label>
+              <input
+                type="number"
+                name="numberOfGuests"
+                value={formData.numberOfGuests}
+                onChange={handleChange}
+                placeholder="Enter number of guests"
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500"
+                required
+                min="1"
+                max="1000"
+              />
+            </div>
+
+            <div>
+              <label className="block mb-1 font-medium">
+                Required Services
+              </label>
+              <div className="flex flex-wrap gap-4">
+                {["Catering", "Decoration", "Music", "Lighting"].map(
+                  (service, index) => (
+                    <label key={index} className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        value={service}
+                        checked={formData.services.includes(service)}
+                        onChange={handleServiceChange}
+                        className="form-checkbox text-purple-600"
+                      />
+                      <span>{service}</span>
+                    </label>
+                  )
+                )}
+              </div>
+            </div>
+
+            <div>
+              <label className="block mb-1 font-medium">Additional Info</label>
+              <textarea
+                name="additionalInfo"
+                value={formData.additionalInfo}
+                onChange={handleChange}
+                placeholder="Enter any additional details"
+                rows="4"
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500"
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className={`w-full py-2 rounded-md cursor-pointer transition ${
+                isSubmitting
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-purple-600 text-white hover:bg-purple-700"
+              }`}
+            >
+              {isSubmitting ? "Submitting..." : "Submit"}
+            </button>
+          </form>
+
+          {messageVisible && (
+            <p className="mt-4 text-lg font-semibold text-green-600 text-center">
+              Your event has been created successfully.
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

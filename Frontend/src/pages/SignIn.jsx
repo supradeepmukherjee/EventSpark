@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import signinImg from "/images/sign-in.jpg"; // ✅ Make sure this image exists
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -10,7 +11,6 @@ const SignIn = () => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(AuthContext);
 
-  // Redirect if already logged in
   useEffect(() => {
     if (user) {
       navigate(user.role === "Admin" ? "/admin-dashboard" : "/");
@@ -37,13 +37,10 @@ const SignIn = () => {
       if (!response.ok)
         throw new Error(data.message || "Invalid email or password");
 
-      // Store user session
       localStorage.setItem("userToken", data.token);
       localStorage.setItem("userData", JSON.stringify(data.user));
-
       setUser(data.user);
 
-      // Redirect based on role
       navigate(data.user.role === "Admin" ? "/admin-dashboard" : "/");
     } catch (err) {
       setError(err.message);
@@ -53,51 +50,67 @@ const SignIn = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-semibold text-center mb-4">Sign In</h2>
+    <div className="flex h-screen bg-gradient-to-br from-green-100 via-white to-green-200">
+      {/* Left Side: Image */}
+      <div className="hidden md:block md:w-1/2 h-full">
+        <img
+          src={signinImg}
+          alt="Sign In Visual"
+          className="w-full h-full object-cover"
+        />
+      </div>
 
-        {error && <p className="text-red-500 text-center">{error}</p>}
+      {/* Right Side: Form */}
+      <div className="w-full md:w-1/2 h-full flex items-center justify-center">
+        <div className="bg-white p-8 md:p-10 rounded-lg shadow-lg w-full max-w-md mx-4">
+          <h2 className="text-3xl font-bold text-green-600 text-center mb-6">
+            Welcome Back!
+          </h2>
 
-        <form onSubmit={handleSignIn} className="space-y-4">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            required
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
-          />
-          <button
-            type="submit"
-            className={`w-full py-2 rounded-md transition ${
-              loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-green-500 text-white hover:bg-green-600"
-            }`}
-            disabled={loading}
-          >
-            {loading ? "Signing In..." : "Sign In"}
-          </button>
-        </form>
+          {error && (
+            <p className="text-red-500 text-sm text-center mb-3">{error}</p>
+          )}
 
-        <p className="text-center mt-4 text-sm">
-          Don't have an account?{" "}
-          <span
-            className="text-green-500 cursor-pointer hover:underline"
-            onClick={() => navigate("/sign-up")}
-          >
-            Sign Up
-          </span>
-        </p>
+          <form onSubmit={handleSignIn} className="space-y-4">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              required
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              required
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full py-3 rounded-md font-semibold transition ${
+                loading
+                  ? "bg-gray-400 cursor-not-allowed text-white"
+                  : "bg-green-500 hover:bg-green-600 text-white"
+              }`}
+            >
+              {loading ? "Signing In..." : "Sign In"}
+            </button>
+          </form>
+
+          <p className="text-center mt-5 text-sm text-gray-600">
+            Don't have an account?{" "}
+            <span
+              className="text-green-500 font-medium cursor-pointer hover:underline"
+              onClick={() => navigate("/sign-up")}
+            >
+              Sign Up
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );

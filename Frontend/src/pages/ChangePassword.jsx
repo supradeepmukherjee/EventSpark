@@ -18,8 +18,8 @@ const ChangePassword = () => {
     setSuccess("");
     setLoading(true);
 
-    if (newPassword.length < 6) {
-      setError("New password must be at least 6 characters long.");
+    if (newPassword.length < 8) {
+      setError("New password must be at least 8 characters long.");
       setLoading(false);
       return;
     }
@@ -32,14 +32,15 @@ const ChangePassword = () => {
 
     try {
       const response = await fetch(
-        import.meta.env.VITE_SERVER + "/user/change-password",
+        import.meta.env.VITE_SERVER + "/user/update-password",
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("userToken")}`,
           },
           body: JSON.stringify({ oldPassword, newPassword }),
+          credentials: "include",
         }
       );
 
@@ -50,7 +51,7 @@ const ChangePassword = () => {
       }
 
       setSuccess("Password changed successfully! Redirecting to sign-in...");
-      setTimeout(() => navigate("/sign-in"), 2000); // Redirect after 2 seconds
+      setTimeout(() => navigate("/sign-in"), 2000);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -59,23 +60,27 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-semibold text-center mb-4">
+    <div className="h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-blue-200">
+      <div className="backdrop-blur-lg bg-white/70 shadow-2xl rounded-xl p-8 w-full max-w-md border border-white/40">
+        <h2 className="text-3xl font-bold text-blue-600 text-center mb-6">
           Change Password
         </h2>
 
-        {error && <p className="text-red-500 text-center">{error}</p>}
-        {success && <p className="text-green-500 text-center">{success}</p>}
+        {error && (
+          <p className="text-red-500 text-sm text-center mb-3">{error}</p>
+        )}
+        {success && (
+          <p className="text-green-600 text-sm text-center mb-3">{success}</p>
+        )}
 
-        <form onSubmit={handlePasswordChange}>
+        <form onSubmit={handlePasswordChange} className="space-y-4">
           <input
             type="password"
             value={oldPassword}
             onChange={(e) => setOldPassword(e.target.value)}
             placeholder="Old Password"
             required
-            className="w-full p-2 mb-4 border rounded"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <input
             type="password"
@@ -83,7 +88,7 @@ const ChangePassword = () => {
             onChange={(e) => setNewPassword(e.target.value)}
             placeholder="New Password"
             required
-            className="w-full p-2 mb-4 border rounded"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <input
             type="password"
@@ -91,12 +96,17 @@ const ChangePassword = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="Confirm New Password"
             required
-            className="w-full p-2 mb-4 border rounded"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
+
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
             disabled={loading}
+            className={`w-full py-3 rounded-md cursor-pointer font-semibold transition ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed text-white"
+                : "bg-blue-500 hover:bg-blue-600 text-white"
+            }`}
           >
             {loading ? "Updating..." : "Change Password"}
           </button>
