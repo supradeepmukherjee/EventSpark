@@ -3,16 +3,19 @@
 /* Styling Scroll Bar */
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px; /* Adjust width */
+  width: 8px;
+  /* Adjust width */
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1a1a; /* Dark background */
+  background: #1a1a1a;
+  /* Dark background */
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(45deg, #ff6b6b, #556270); /* Gradient effect */
+  background: linear-gradient(45deg, #ff6b6b, #556270);
+  /* Gradient effect */
   border-radius: 10px;
 }
 
@@ -23,4 +26,81 @@
 /* Smooth Scrolling */
 html {
   scroll-behavior: smooth;
+}
+
+.success {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
+  height: 50vh;
+  padding: 10vmax;
+  margin-top: 10vh;
+}
+
+.success>p {
+  font-size: 2vmax;
+}
+
+.success>a {
+  background-color: #373737;
+  color: #fff;
+  margin: 2vmax;
+  cursor: pointer;
+  text-decoration: none;
+  font: 400 1.2vmax 'Roboto';
+  padding: 1vmax 3vmax;
+}
+
+.payment {
+  display: grid;
+  place-items: center;
+  background-color: #fff;
+  margin: 2vmax;
+  height: 65vh;
+}
+
+.paymentBtn {
+  border: none;
+  background-color: #ff6347;
+  color: #fff;
+  font: 300 2vmax 'Roboto';
+  width: 20%;
+  padding: 0.9vmax;
+  cursor: pointer;
+  transition: all .2s;
+  border-radius: 1vh;
+}
+
+.paymentBtn:hover {
+  background-color: #b4422e;
+}
+
+@media screen and (max-width:600px) {
+  .payment {
+    width: 90%;
+  }
+
+  .paymentBtn {
+    font: 300 4vw 'Roboto';
+    width: 60%;
+    padding: 4vw;
+  }
+
+  .success>a {
+    padding: 3vw 6vw;
+    font: 400 4vw 'Roboto';
+    margin: 2vmax;
+  }
+
+  .success>svg {
+    font-size: 20vw;
+  }
+
+  .success>p {
+    margin: 2vmax;
+    font-size: 5vw;
+  }
 }

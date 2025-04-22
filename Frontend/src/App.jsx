@@ -26,6 +26,8 @@ import ChangePassword from "./pages/ChangePassword.jsx";
 import AdminDashboard from "./dashboard/admin/AdminDashboard.jsx";
 import CustomerDashboard from "./dashboard/user/CustomerDashboard.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import Payment from "./components/Payment.jsx";
+import Success from "./components/Success.jsx";
 
 // ✅ Layout component (Header will be shown on all pages)
 const Layout = ({ children }) => (
@@ -150,6 +152,8 @@ function App() {
         <Route path="/customer-dashboard" element={<CustomerDashboard />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
       </Route>
+        <Route path="/pay/:id" element={<Payment />} />
+        <Route path="/success" element={<Success />} />
 
       {/* 404 Not Found Page */}
       <Route path="*" element={<NotFound />} />
