@@ -35,6 +35,16 @@ const schema = new Schema({
         enum: ['Pending', 'Approved', 'Rejected'],
         default: 'Pending'
     },
+    paymentInfo: {
+        paymentID: String,
+        orderID: String,
+        status: {
+            type: String,
+            required: true,
+            default: 'Pending'
+        },
+    },
+    paidAt: Date,
     additionalInfo: String,
 },
     { timestamps: true }
