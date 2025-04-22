@@ -20,7 +20,7 @@ const checkout = tryCatch(async (req, res, next) => {
         },
         { new: true }
     )
-    res.status(200).json({ success: true, msg: 'Payment Initiated', createdOrder })
+    res.status(200).json({ success: true, msg: 'Payment Initiated', createdOrder, paymentOrder })
 })
 
 const verifyPayment = tryCatch(async (req, res, next) => {
@@ -36,7 +36,7 @@ const verifyPayment = tryCatch(async (req, res, next) => {
         signature: razorpay_signature
     })
     if (expectedSignature !== signature) return next(new ErrorHandler(400, 'Invalid Payment Signature'))
-    const order = await Event.findOneAndUpdate(
+    await Event.findOneAndUpdate(
         { 'paymentInfo.orderID': razorpay_order_id },
         {
             paymentInfo: {
