@@ -2,9 +2,7 @@ import { tryCatch } from '../middlewares/error.js'
 import { Contact } from '../models/Contact.js'
 
 const store = tryCatch(async (req, res, next) => {
-    const q = req.body
-    if (req.user) q = { ...q, user: req.user }
-    await Contact.create(q)
+    await Contact.create({ ...req.body, user: req.user })
     res.status(200).json({ success: true, msg: 'Thank you for Contacting Us.' })
 })
 
