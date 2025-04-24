@@ -4,6 +4,8 @@ import { User } from '../models/User.js'
 
 const create = tryCatch(async (req, res, next) => {
     console.log(req.user)
+    const eventExists = await Event.findOne({ user: req.user })
+    if(eventExists)return res.status(200).json({ success: false, msg: 'You have already created an event which has been either approved/pending.' })
     const event = await Event.create({ ...req.body, user: req.user })
     res.status(200).json({ success: true, msg: 'Event Created Successfully', event })
 })
