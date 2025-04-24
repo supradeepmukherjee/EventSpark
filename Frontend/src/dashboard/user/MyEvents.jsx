@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const MyEvents = () => {
   const [eventEnrollments, setEventEnrollments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("userToken");
         const response = await fetch(
-          `${import.meta.env.VITE_SERVER}/event/by-account`,
+          `${import.meta.env.VITE_SERVER}/events/by-account`,
           {
             method: "GET",
             headers: {
@@ -22,10 +24,10 @@ const MyEvents = () => {
         );
 
         const data = await response.json();
-        const events = Array.isArray(data.event) ? data.event : [data.event];
-        setEventEnrollments(events);
-
-        // Removed: setting message about active events
+        console.log(data);
+        const allEvents = data.events;
+        console.log(allEvents);
+        setEventEnrollments(allEvents);
       } catch (error) {
         console.error("Error fetching event data:", error);
         setMessage("Error loading your events.");
@@ -36,6 +38,11 @@ const MyEvents = () => {
 
     fetchData();
   }, []);
+
+  const handlePaymentRedirect = (eventId) => {
+    alert("Proceeding to payment...");
+    navigate(`/pay/${eventId}`);
+  };
 
   return (
     <section className="p-4">
@@ -102,9 +109,7 @@ const MyEvents = () => {
                       event.paymentInfo?.status === "Pending" && (
                         <button
                           className="bg-blue-500 text-white px-3 py-1 cursor-pointer rounded hover:bg-blue-600 transition"
-                          onClick={() =>
-                            alert(`Proceed to payment for ${event.name}`)
-                          }
+                          onClick={() => handlePaymentRedirect(event._id)}
                         >
                           Pay Now
                         </button>

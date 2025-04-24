@@ -7,17 +7,21 @@ const AdminFeedback = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("userToken");
-        const userId = localStorage.getItem("userId"); // Assuming user ID is stored in local storage
 
-        const feedbacksRes = await fetch(
-          `${import.meta.env.VITE_SERVER}/contact/feedback/${userId}`,
+        const response = await fetch(
+          `${import.meta.env.VITE_SERVER}/feedback/by-user`,
           {
-            headers: { Authorization: `Bearer ${token}` },
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            credentials: "include",
           }
         );
 
-        const feedbackData = await feedbacksRes.json();
-        setFeedbacks(feedbackData);
+        const data = await response.json();
+        setFeedbacks(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching feedback data:", error);
       }
@@ -37,11 +41,13 @@ const AdminFeedback = () => {
                 Your Query: {fb.query}
               </p>
               <p className="text-green-600 mt-1">
-                Admin Response: {fb.response}
+                Admin Response: {fb.response || "No response yet"}
               </p>
-              <p className="text-sm text-gray-500">
-                {new Date(fb.respondedAt).toLocaleString()}
-              </p>
+              {fb.respondedAt && (
+                <p className="text-sm text-gray-500">
+                  {new Date(fb.respondedAt).toLocaleString()}
+                </p>
+              )}
             </div>
           ))
         ) : (
