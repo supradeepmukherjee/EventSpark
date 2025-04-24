@@ -24,8 +24,8 @@ const allEvents = tryCatch(async (req, res, next) => {
 })
 
 const eventsByUser = tryCatch(async (req, res, next) => {
-    const event = await Event.findOne({ user: req.user })
-    res.status(200).json({ success: true, event })
+    const events = await Event.find({ user: req.user })
+    res.status(200).json({ success: true, events })
 })
 
 const updateStatus = tryCatch(async (req, res, next) => {
