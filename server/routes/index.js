@@ -13,9 +13,9 @@ import { isAuthenticated } from '../middlewares/auth.js'
 const router = Router()
 
 router.use('/user', user)
+router.use('/contact', contact)
 
 router.use(isAuthenticated)
-router.use('/contact', contact)
 router.use('/event', event)
 router.use('/decoration', decoration)
 router.use('/entertainment', entertainment)
