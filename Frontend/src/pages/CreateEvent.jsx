@@ -74,12 +74,15 @@ const CreateEvent = () => {
       });
 
       const data = await response.json();
+      console.log(data);
 
-      if (!response.ok) {
-        console.error("Error details:", data);
-        throw new Error(data.message || "Failed to create event");
+      if (!response.ok || data.success === false) {
+        // handle specific server response about multiple events
+        const errorMsg = data.msg || "Failed to create event";
+        throw new Error(errorMsg);
       }
 
+      // Only if success is true
       setMessageVisible(true);
       setFormData({
         name: "",
