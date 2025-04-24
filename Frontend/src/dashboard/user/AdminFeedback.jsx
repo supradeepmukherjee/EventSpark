@@ -9,7 +9,7 @@ const AdminFeedback = () => {
         const token = localStorage.getItem("userToken");
 
         const response = await fetch(
-          `${import.meta.env.VITE_SERVER}/feedback/by-user`,
+          `${import.meta.env.VITE_SERVER}/contact/user`,
           {
             method: "GET",
             headers: {
