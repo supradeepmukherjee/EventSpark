@@ -24,8 +24,7 @@ const MyEvents = () => {
         );
 
         const data = await response.json();
-        const allEvents = data.events;
-        setEventEnrollments(allEvents);
+        setEventEnrollments(data.events);
       } catch (error) {
         console.error("Error fetching event data:", error);
         setMessage("Error loading your events.");
@@ -40,6 +39,12 @@ const MyEvents = () => {
   const handlePaymentRedirect = (eventId) => {
     alert("Proceeding to payment...");
     navigate(`/pay/${eventId}`);
+  };
+
+  const handleReviewRedirect = (eventId, userId) => {
+    navigate("/submit-review", {
+      state: { eventId, userId },
+    });
   };
 
   return (
@@ -96,6 +101,8 @@ const MyEvents = () => {
                           ? "bg-green-500"
                           : event.status === "Pending"
                           ? "bg-yellow-500"
+                          : event.status === "Completed"
+                          ? "bg-blue-500"
                           : "bg-red-500"
                       }`}
                     >
@@ -106,12 +113,23 @@ const MyEvents = () => {
                     {event.status === "Approved" &&
                       event.paymentInfo?.status === "Pending" && (
                         <button
-                          className="bg-blue-500 text-white px-3 py-1 cursor-pointer rounded hover:bg-blue-600 transition"
+                          className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition"
                           onClick={() => handlePaymentRedirect(event._id)}
                         >
                           Pay Now
                         </button>
                       )}
+
+                    {event.status === "Completed" && (
+                      <button
+                        className="bg-green-500 cursor-pointer text-white px-3 py-1 rounded hover:bg-green-600 transition"
+                        onClick={() =>
+                          handleReviewRedirect(event._id, event.user)
+                        }
+                      >
+                        Give Review
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))

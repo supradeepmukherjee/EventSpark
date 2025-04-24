@@ -27,6 +27,7 @@ import CustomerDashboard from "./dashboard/user/CustomerDashboard.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Payment from "./components/Payment.jsx";
 import Success from "./components/Success.jsx";
+import SubmitReview from "./dashboard/user/SubmitReview.jsx";
 
 // ✅ Layout component (Header will be shown on all pages)
 const Layout = ({ children }) => (
@@ -141,6 +142,7 @@ function App() {
       <Route element={<ProtectedRoute />}>
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/customer-dashboard" element={<CustomerDashboard />} />
+        <Route path="/submit-review" element={<SubmitReview />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
       </Route>
       <Route path="/pay/:id" element={<Payment />} />
