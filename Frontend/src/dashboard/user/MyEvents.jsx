@@ -12,7 +12,7 @@ const MyEvents = () => {
       try {
         const token = localStorage.getItem("userToken");
         const response = await fetch(
-          `${import.meta.env.VITE_SERVER}/events/by-account`,
+          `${import.meta.env.VITE_SERVER}/event/by-account`,
           {
             method: "GET",
             headers: {
@@ -24,9 +24,7 @@ const MyEvents = () => {
         );
 
         const data = await response.json();
-        console.log(data);
         const allEvents = data.events;
-        console.log(allEvents);
         setEventEnrollments(allEvents);
       } catch (error) {
         console.error("Error fetching event data:", error);

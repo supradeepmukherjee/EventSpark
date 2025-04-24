@@ -9,7 +9,6 @@ import {
 } from "react-icons/fa";
 
 export const Footer = () => {
-  // Contact Numbers Array
   const contactNumbers = [
     "+919832995646",
     "+919547165753",
@@ -31,16 +30,26 @@ export const Footer = () => {
         <div>
           <h3 className="text-xl font-bold mb-3">Quick Links</h3>
           <ul className="space-y-2">
-            {["Home", "Services", "About", "Gallery"].map((item, index) => (
-              <li key={index}>
-                <Link
-                  to={`/${item.toLowerCase()}`}
-                  className="hover:text-blue-400"
-                >
-                  {item}
-                </Link>
-              </li>
-            ))}
+            <li>
+              <Link to="/" className="hover:text-blue-400">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/service" className="hover:text-blue-400">
+                Services
+              </Link>
+            </li>
+            <li>
+              <Link to="/about-us" className="hover:text-blue-400">
+                About
+              </Link>
+            </li>
+            <li>
+              <Link to="/gallery" className="hover:text-blue-400">
+                Gallery
+              </Link>
+            </li>
           </ul>
         </div>
 

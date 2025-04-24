@@ -52,9 +52,11 @@ export const ContactUs = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
         body: JSON.stringify(formData),
       });
 
+      console.log(res);
       if (res.ok) {
         setSubmitted(true);
         setFormData({

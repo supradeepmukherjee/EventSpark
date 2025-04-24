@@ -49,7 +49,6 @@ const Header = () => {
               { name: "Price", path: "/pricing" },
               { name: "Review", path: "/reviews" },
               { name: "Contact", path: "/contact" },
-              { name: "Status", path: "/status" },
             ].map((link) => (
               <li key={link.name}>
                 <Link

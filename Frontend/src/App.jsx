@@ -20,7 +20,6 @@ import LightingForm from "./components/services/LightingForm";
 import CreateEvent from "./pages/CreateEvent";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp.jsx";
-import Status from "./pages/EventStatus.jsx";
 import NotFound from "./pages/NotFound"; // For 404 handling
 import ChangePassword from "./pages/ChangePassword.jsx";
 import AdminDashboard from "./dashboard/admin/AdminDashboard.jsx";
@@ -129,14 +128,6 @@ function App() {
           </Layout>
         }
       />
-      <Route
-        path="/status"
-        element={
-          <Layout>
-            <Status />
-          </Layout>
-        }
-      />
 
       {/* Service Pages (No Header needed) */}
       <Route path="/venue-selection" element={<VenueSelectionForm />} />
@@ -152,8 +143,8 @@ function App() {
         <Route path="/customer-dashboard" element={<CustomerDashboard />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
       </Route>
-        <Route path="/pay/:id" element={<Payment />} />
-        <Route path="/success" element={<Success />} />
+      <Route path="/pay/:id" element={<Payment />} />
+      <Route path="/success" element={<Success />} />
 
       {/* 404 Not Found Page */}
       <Route path="*" element={<NotFound />} />
