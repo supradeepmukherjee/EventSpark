@@ -50,8 +50,8 @@ const ChangePassword = () => {
         );
       }
 
-      setSuccess("Password changed successfully! Redirecting to sign-in...");
-      setTimeout(() => navigate("/sign-in"), 2000);
+      setSuccess("Password changed successfully! Redirecting to Home Page...");
+      setTimeout(() => navigate("/"), 2000);
     } catch (err) {
       setError(err.message);
     } finally {
