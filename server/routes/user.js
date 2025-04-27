@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { allUsers, delAccount, forgotPassword, getMyProfile, login, logOut, onlyUsers, register, resetPassword, updatePassword, updateProfile } from '../controllers/user.js'
+import { allUsers, delAccount, forgotPassword, getEvents, getMyProfile, login, logOut, onlyUsers, register, resetPassword, updatePassword, updateProfile } from '../controllers/user.js'
 import { forgotPasswordValidator, loginValidator, registerValidator, resetPasswordValidator, validateHandler } from '../lib/validators.js'
 import { isAuthenticated } from '../middlewares/auth.js'
 import { singleChavi } from '../middlewares/multer.js'
@@ -10,6 +10,7 @@ app.post('/register', singleChavi, registerValidator(), validateHandler, registe
 app.post('/login', loginValidator(), validateHandler, login)
 app.put('/forgot-password', forgotPasswordValidator(), validateHandler, forgotPassword)
 app.put('/reset-password/:token', resetPasswordValidator(), validateHandler, resetPassword)
+app.get('/review', getEvents)
 
 app.use(isAuthenticated)
 app.get('/my-profile', getMyProfile)

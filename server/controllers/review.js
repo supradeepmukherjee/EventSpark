@@ -9,9 +9,4 @@ const store = tryCatch(async (req, res, next) => {
     res.status(200).json({ success: true, msg: 'Review Submitted Successfully', review, reviewedEvent })
 })
 
-const get = tryCatch(async (req, res, next) => {
-    const reviews = await Review.find({}).populate('event.user')
-    res.status(200).json({ success: true, reviews })
-})
-
-export { store, get }
+export { store }

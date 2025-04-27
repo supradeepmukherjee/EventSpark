@@ -7,6 +7,7 @@ import { uploadToCloudinary } from '../utils/cloudinary.js'
 import sendToken, { cookieOptions } from '../utils/jwtToken.js'
 import { ErrorHandler } from '../utils/utility.js'
 import sendEmail from '../utils/sendEmail.js'
+import { Review } from '../models/Review.js'
 
 const register = tryCatch(async (req, res, next) => {
     const { name, password, email } = req.body
@@ -65,7 +66,7 @@ const updateProfile = tryCatch(async (req, res, next) => {
 })
 
 const updatePassword = tryCatch(async (req, res, next) => {
-    const { oldPassword:old, newPassword: newP } = req.body
+    const { oldPassword: old, newPassword: newP } = req.body
     const user = await User.findById(req.user).select('+password')
     if (!user) return next(new ErrorHandler(404, 'User not found'))
     if (!(old && newP)) return next(new ErrorHandler(400, 'Please provide old & new password'))
@@ -123,4 +124,9 @@ const onlyUsers = tryCatch(async (req, res, next) => {
     res.status(200).json({ success: true, users })
 })
 
-export { login, register, getMyProfile, logOut, updateProfile, updatePassword, forgotPassword, resetPassword, delAccount, allUsers, onlyUsers }
+const getEvents = tryCatch(async (req, res, next) => {
+    const reviews = await Review.find({}).populate('event.user')
+    res.status(200).json({ success: true, reviews })
+})
+
+export { login, register, getMyProfile, logOut, updateProfile, updatePassword, forgotPassword, resetPassword, delAccount, allUsers, onlyUsers, getEvents }
