@@ -5,7 +5,8 @@ import { Review } from '../models/Review.js'
 const store = tryCatch(async (req, res, next) => {
     const { event, rating, comment } = req.body
     const review = await Review.create({ event, rating, comment })
-    res.status(200).json({ success: true, msg: 'Review Submitted Successfully', review })
+    const reviewedEvent = await Event.findByIdAndUpdate(event, { reviewGiven: true }, { new: true })
+    res.status(200).json({ success: true, msg: 'Review Submitted Successfully', review, reviewedEvent })
 })
 
 const get = tryCatch(async (req, res, next) => {

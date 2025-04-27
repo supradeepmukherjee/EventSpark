@@ -46,6 +46,10 @@ const schema = new Schema({
     },
     paidAt: Date,
     additionalInfo: String,
+    reviewGiven: {
+        type: Boolean,
+        default: false
+    }
 },
     { timestamps: true }
 )
