@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 
 // Helper to get initials from name
-const getInitials = (name) =>
-  name
+const getInitials = (name) => {
+  if (!name) return "U"; // Default initial if name is undefined
+  return name
     .split(" ")
     .map((n) => n[0])
     .join("")
     .toUpperCase();
+};
 
 // Helper to render star rating
 const StarRating = ({ rating }) => {
@@ -55,11 +57,16 @@ const Review = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          "https://your-backend-url.com/api/reviews"
-        ); // 🔥 Change to your backend URL
-        const data = await response.json();
-        setAllReviews(data);
-        setVisibleReviews(data.slice(0, REVIEWS_PER_PAGE));
+          `${import.meta.env.VITE_SERVER}/user/review`
+        );
+        const result = await response.json();
+        console.log(result.reviews);
+
+        // If your backend sends { success: true, data: [...] }
+        const allReviews = result.reviews; // fallback if it's direct array
+
+        setAllReviews(allReviews);
+        setVisibleReviews(allReviews.slice(0, REVIEWS_PER_PAGE));
       } catch (error) {
         console.error("Error fetching reviews:", error);
       } finally {
@@ -114,7 +121,7 @@ const Review = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {visibleReviews.map((client) => (
               <div
-                key={client.id}
+                key={client._id}
                 className="bg-[#1f1f1f] p-6 rounded-2xl shadow-xl hover:shadow-blue-500/30 transition-all"
               >
                 {/* Logo and Name */}
@@ -134,7 +141,7 @@ const Review = () => {
                 </div>
 
                 {/* Review Text */}
-                <p className="text-gray-300 text-sm">{client.review}</p>
+                <p className="text-gray-300 text-sm">{client.comment}</p>
               </div>
             ))}
           </div>
