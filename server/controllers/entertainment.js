@@ -1,11 +1,26 @@
 import { tryCatch } from '../middlewares/error.js'
 import { Entertainment } from '../models/Entertainment.js'
+import { Event } from '../models/Event.js'
 
 const store = tryCatch(async (req, res, next) => {
-    const entertainment = await Entertainment.create(req.body)
+    const events = await Event.find({
+        user: req.user,
+        status: 'Approved'
+    })
+    let event = ''
+    console.log(events)
+    events.forEach(e => {
+        const endDate = new Date(e.end);
+        const today = new Date();
+
+        // Set today's time to 00:00:00 to compare only dates (optional)
+        today.setHours(0, 0, 0, 0);
+
+        if (endDate >= today) event = e._id
+    });
+    const entertainment = await Entertainment.create({ ...req.body, event })
     res.status(200).json({ success: true, data: entertainment, msg: 'Entertainment Details Stored Successfully' })
 })
-
 
 export { store }
 
