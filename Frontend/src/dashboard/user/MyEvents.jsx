@@ -122,12 +122,18 @@ const MyEvents = () => {
 
                     {event.status === "Completed" && (
                       <button
-                        className="bg-green-500 cursor-pointer text-white px-3 py-1 rounded hover:bg-green-600 transition"
+                        disabled={event.reviewGiven} // disable if review already given
+                        className={`px-3 py-1 rounded transition ${
+                          event.reviewGiven
+                            ? "bg-gray-400 cursor-not-allowed text-white"
+                            : "bg-green-500 hover:bg-green-600 text-white cursor-pointer"
+                        }`}
                         onClick={() =>
+                          !event.reviewGiven &&
                           handleReviewRedirect(event._id, event.user)
                         }
                       >
-                        Give Review
+                        {event.reviewGiven ? "Review Submitted" : "Give Review"}
                       </button>
                     )}
                   </td>

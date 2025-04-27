@@ -50,210 +50,24 @@ const Review = () => {
   const [loading, setLoading] = useState(false);
   const REVIEWS_PER_PAGE = 6;
 
-  // 30 Dummy reviews data with ratings
-  const dummyReviews = [
-    {
-      id: 1,
-      name: "Rahul Majhi",
-      review: "Amazing experience with the service. Highly recommended!",
-      rating: 5,
-    },
-    {
-      id: 2,
-      name: "Jeoa Chon",
-      review: "The event was perfect! Loved every moment of it.",
-      rating: 1,
-    },
-    {
-      id: 3,
-      name: "Rakue Sues",
-      review: "Very professional and everything went smoothly. Excellent team!",
-      rating: 4,
-    },
-    {
-      id: 4,
-      name: "Kasua Buay",
-      review: "Highly satisfied with the services. Will definitely use again.",
-      rating: 5,
-    },
-    {
-      id: 5,
-      name: "Aiden Paul",
-      review: "A flawless event! Everything was well-organized.",
-      rating: 4,
-    },
-    {
-      id: 6,
-      name: "Shani Fearn",
-      review: "A wonderful experience. The team made the event unforgettable!",
-      rating: 5,
-    },
-    {
-      id: 7,
-      name: "Tina Mages",
-      review:
-        "Outstanding event management. The attention to detail was amazing!",
-      rating: 5,
-    },
-    {
-      id: 8,
-      name: "Ben Timmons",
-      review: "Had an excellent time. Everything was planned to perfection.",
-      rating: 4,
-    },
-    {
-      id: 9,
-      name: "Lily Maxon",
-      review: "Fantastic! Everything was beyond expectations!",
-      rating: 5,
-    },
-    {
-      id: 10,
-      name: "Kira Shane",
-      review:
-        "Extremely happy with the service provided. Would definitely recommend.",
-      rating: 5,
-    },
-    {
-      id: 11,
-      name: "Paul Winston",
-      review: "A seamless event from start to finish. Highly professional.",
-      rating: 3,
-    },
-    {
-      id: 12,
-      name: "Mira Ford",
-      review:
-        "Great experience! It was such a pleasure working with this team.",
-      rating: 5,
-    },
-    {
-      id: 13,
-      name: "John Cena",
-      review:
-        "The service was great! I would highly recommend this to my friends.",
-      rating: 4,
-    },
-    {
-      id: 14,
-      name: "Sam Andrews",
-      review: "A great team! Very professional and easy to work with.",
-      rating: 3,
-    },
-    {
-      id: 15,
-      name: "Olivia Green",
-      review:
-        "Had an unforgettable experience. Very satisfied with the outcome.",
-      rating: 5,
-    },
-    {
-      id: 16,
-      name: "Luke White",
-      review:
-        "Top-notch service! The team went above and beyond to make everything perfect.",
-      rating: 4,
-    },
-    {
-      id: 17,
-      name: "Emma Stone",
-      review:
-        "Everything was organized well and everyone had a fantastic time!",
-      rating: 5,
-    },
-    {
-      id: 18,
-      name: "Sophia Black",
-      review:
-        "I couldn't ask for better service. Highly impressed with everything.",
-      rating: 5,
-    },
-    {
-      id: 19,
-      name: "Jack Brooks",
-      review: "Perfect event management. Everything went as planned!",
-      rating: 4,
-    },
-    {
-      id: 20,
-      name: "Mia Collins",
-      review:
-        "I’m so happy with the results! Great communication and execution.",
-      rating: 5,
-    },
-    {
-      id: 21,
-      name: "Aaron Lewis",
-      review:
-        "The team made my event a huge success. So thankful for their hard work!",
-      rating: 4,
-    },
-    {
-      id: 22,
-      name: "Chloe Miller",
-      review: "Outstanding service and attention to detail. Highly recommend!",
-      rating: 5,
-    },
-    {
-      id: 23,
-      name: "Daniel Black",
-      review: "Flawless execution. Couldn’t ask for a better event!",
-      rating: 3,
-    },
-    {
-      id: 24,
-      name: "Nina White",
-      review: "Great team, professional service, would definitely hire again!",
-      rating: 4,
-    },
-    {
-      id: 25,
-      name: "Isaac Green",
-      review:
-        "Everything was handled perfectly. I couldn't have asked for more.",
-      rating: 5,
-    },
-    {
-      id: 26,
-      name: "Eva Brown",
-      review:
-        "The best event planning team I’ve ever worked with. Very thorough!",
-      rating: 4,
-    },
-    {
-      id: 27,
-      name: "Oliver King",
-      review:
-        "The service exceeded my expectations! Very happy with the outcome.",
-      rating: 5,
-    },
-    {
-      id: 28,
-      name: "Amelia Moore",
-      review: "A highly professional team. I’m so glad I worked with them!",
-      rating: 5,
-    },
-    {
-      id: 29,
-      name: "Charlotte Lee",
-      review: "Amazing experience. The event went off without a hitch!",
-      rating: 5,
-    },
-    {
-      id: 30,
-      name: "Michael Smith",
-      review: "From start to finish, everything was perfect. Very pleased!",
-      rating: 5,
-    },
-  ];
-
   useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      setAllReviews(dummyReviews);
-      setVisibleReviews(dummyReviews.slice(0, REVIEWS_PER_PAGE));
-      setLoading(false);
-    }, 500);
+    const fetchReviews = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          "https://your-backend-url.com/api/reviews"
+        ); // 🔥 Change to your backend URL
+        const data = await response.json();
+        setAllReviews(data);
+        setVisibleReviews(data.slice(0, REVIEWS_PER_PAGE));
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReviews();
   }, []);
 
   const handleNext = () => {

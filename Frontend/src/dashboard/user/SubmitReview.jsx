@@ -19,22 +19,20 @@ const SubmitReview = () => {
 
     try {
       const token = localStorage.getItem("userToken");
-      const response = await fetch(
-        `${import.meta.env.VITE_SERVER}/review/submit`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            event: state.eventId,
-            userId: state.userId,
-            rating,
-            comment,
-          }),
-        }
-      );
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/review`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          event: state.eventId,
+          userId: state.userId,
+          rating,
+          comment,
+        }),
+      });
 
       const data = await response.json();
 
