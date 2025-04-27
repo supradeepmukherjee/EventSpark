@@ -28,7 +28,7 @@ const SubmitReview = () => {
         credentials: "include",
         body: JSON.stringify({
           event: state.eventId,
-          userId: state.userId,
+          user: state.userId,
           rating,
           comment,
         }),
