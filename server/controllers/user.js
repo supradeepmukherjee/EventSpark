@@ -125,7 +125,7 @@ const onlyUsers = tryCatch(async (req, res, next) => {
 })
 
 const getEvents = tryCatch(async (req, res, next) => {
-    const reviews = await Review.find({}).populate('event.user')
+    const reviews = await Review.find({}).populate('event','user')
     res.status(200).json({ success: true, reviews })
 })
 
