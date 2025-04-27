@@ -61,10 +61,14 @@ const analytics = tryCatch(async (req, res, next) => {
     let activeEvents = 0
 
     totalEvents.forEach(e => {
-        // const startDate = e.startDate.setHours(0, 0, 0, 0);
-        // const endDate = e.endDate.setHours(0, 0, 0, 0);
+        const startDate = new Date(e.start);
+        const endDate = new Date(e.end);
+        const today = new Date();
 
-        // if (today >= startDate && today <= endDate) activeEvents++
+        // Set today's time to 00:00:00 to compare only dates (optional)
+        today.setHours(0, 0, 0, 0);
+
+        if (endDate >= today&&startDate<=today) activeEvents++
     });
 
     res.status(200).json({ totalUsers, totalEvents: totalEvents.length, activeEvents, rejectedEvents, approvedEvents, pendingEvents })
