@@ -6,6 +6,11 @@ const schema = new Schema({
         type: Schema.Types.ObjectId,
         required: true
     },
+    user: {
+        ref: 'User',
+        type: Schema.Types.ObjectId,
+        required: true
+    },
     rating: {
         type: Number,
         required: true,
