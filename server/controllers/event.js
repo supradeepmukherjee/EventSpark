@@ -3,9 +3,21 @@ import { Event } from '../models/Event.js'
 import { User } from '../models/User.js'
 
 const create = tryCatch(async (req, res, next) => {
-    console.log(req.user)
-    const eventExists = await Event.findOne({ user: req.user, status: { $in: ['Approved', 'Pending'] } })
-    if(eventExists)return res.status(200).json({ success: false, msg: 'You have already created an event which has been either approved/pending.' })
+    const events = await Event.find({
+        user: req.user,
+        status: { $in: ['Approved', 'Pending'] }
+    })
+    let eventExists= false
+    events.forEach(e => {
+        const endDate = new Date(e.end);
+        const today = new Date();
+
+        // Set today's time to 00:00:00 to compare only dates (optional)
+        today.setHours(0, 0, 0, 0);
+
+        if (endDate >= today) eventExists = true
+    });
+    if(eventExists)return res.status(400).json({ success: false, msg: 'You have already created an event which has been either approved/pending. Also, if the event has been approved, it has not ended yet.' })
     const event = await Event.create({ ...req.body, user: req.user })
     res.status(200).json({ success: true, msg: 'Event Created Successfully', event })
 })
