@@ -28,7 +28,7 @@ const SubmitReview = () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            eventId: state.eventId,
+            event: state.eventId,
             userId: state.userId,
             rating,
             comment,

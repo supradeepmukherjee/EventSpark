@@ -8,6 +8,7 @@ import lighting from './lighting.js'
 import venue from './venue.js'
 import food from './foodNdrink.js'
 import payment from './payment.js'
+import review from './review.js'
 import { isAuthenticated } from '../middlewares/auth.js'
 
 const router = Router()
@@ -23,5 +24,6 @@ router.use('/food',food)
 router.use('/lighting', lighting)
 router.use('/venue', venue)
 router.use('/payment', payment)
+router.use('/review', review)
 
 export default router
