@@ -38,7 +38,7 @@ const allEvents = tryCatch(async (req, res, next) => {
 })
 
 const eventsByUser = tryCatch(async (req, res, next) => {
-    const events = await Event.find({ user: req.user })
+    const events = await Event.find({ user: req.user }).lean()
     let modifiedEvents = []
     events.forEach(e => {
         if (e.status === 'Approved') {
