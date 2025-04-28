@@ -15,7 +15,7 @@ const store = tryCatch(async (req, res, next) => {
         const today = new Date();
 
         // Set today's time to 00:00:00 to compare only dates (optional)
-        today.setHours(0, 0, 0, 0);
+        today.setHours(5, 30, 0, 0)
 
         if (endDate >= today) event = e._id
     });

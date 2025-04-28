@@ -8,7 +8,7 @@ const create = tryCatch(async (req, res, next) => {
     const starting = new Date(start);
     const ending = new Date(end);
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setHours(5, 30, 0, 0);
     if (starting <= today || ending <= today) return next(new ErrorHandler(400, 'Start date & End date must be atleast tomorrow.'))
     const events = await Event.find({
         user: req.user,
@@ -46,7 +46,7 @@ const eventsByUser = tryCatch(async (req, res, next) => {
             const today = new Date();
 
             // Set today's time to 00:00:00 to compare only dates (optional)
-            today.setHours(0, 0, 0, 0);
+            today.setHours(5, 30, 0, 0)
 
             if (endDate < today) modifiedEvents.push({ ...e, status: 'Completed' })
             else modifiedEvents.push(e)
@@ -72,17 +72,13 @@ const analytics = tryCatch(async (req, res, next) => {
     const rejectedEvents = totalEvents.filter(e => e.status === 'Rejected').length
 
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setHours(5, 30, 0, 0)
 
     let activeEvents = 0
 
     totalEvents.forEach(e => {
         const startDate = new Date(e.start);
         const endDate = new Date(e.end);
-        const today = new Date();
-
-        // Set today's time to 00:00:00 to compare only dates (optional)
-        today.setHours(0, 0, 0, 0);
 
         if (endDate >= today && startDate <= today) activeEvents++
     });
