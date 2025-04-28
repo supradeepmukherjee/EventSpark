@@ -118,11 +118,11 @@ const getServicesData = tryCatch(async (req, res, next) => {
 
 const getAllServicesData = tryCatch(async (req, res, next) => {
     const [entertainment, lighting, food, venue, decoration] = await Promise.all([
-        Entertainment.findOne({ event }).populate('event'),
-        Lighting.findOne({ event }).populate('event'),
-        Food.findOne({ event }).populate('event'),
-        Venue.findOne({ event }).populate('event'),
-        Decoration.findOne({ event }).populate('event'),
+        Entertainment.find({}).populate('event'),
+        Lighting.find({}).populate('event'),
+        Food.find({}).populate('event'),
+        Venue.find({}).populate('event'),
+        Decoration.find({}).populate('event'),
     ])
     res.status(200).json({ success: true, entertainment, lighting, food, venue, decoration })
 })
