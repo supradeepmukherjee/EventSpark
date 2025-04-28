@@ -1,23 +1,25 @@
 import { tryCatch } from '../middlewares/error.js'
 import { Event } from '../models/Event.js'
 import { User } from '../models/User.js'
+import { ErrorHandler } from '../utils/utility.js'
 
 const create = tryCatch(async (req, res, next) => {
+    const { start, end } = req.body
+    const starting = new Date(start);
+    const ending = new Date(end);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (starting <= today || ending <= today) return next(new ErrorHandler(400, 'Start date & End date must be atleast tomorrow.'))
     const events = await Event.find({
         user: req.user,
         status: { $in: ['Approved', 'Pending'] }
     })
-    let eventExists= false
+    let eventExists = false
     events.forEach(e => {
         const endDate = new Date(e.end);
-        const today = new Date();
-
-        // Set today's time to 00:00:00 to compare only dates (optional)
-        today.setHours(0, 0, 0, 0);
-
         if (endDate >= today) eventExists = true
     });
-    if(eventExists)return res.status(400).json({ success: false, msg: 'You have already created an event which has been either approved/pending. Also, if the event has been approved, it has not ended yet.' })
+    if (eventExists) return res.status(400).json({ success: false, msg: 'You have already created an event which has been either approved/pending. Also, if the event has been approved, it has not ended yet.' })
     const event = await Event.create({ ...req.body, user: req.user })
     res.status(200).json({ success: true, msg: 'Event Created Successfully', event })
 })
@@ -37,19 +39,21 @@ const allEvents = tryCatch(async (req, res, next) => {
 
 const eventsByUser = tryCatch(async (req, res, next) => {
     const events = await Event.find({ user: req.user })
-    let modifiedEvents=[]
+    let modifiedEvents = []
     events.forEach(e => {
-        if(e.status==='Approved'){
-        const endDate = new Date(e.end);
-        const today = new Date();
+        if (e.status === 'Approved') {
+            const endDate = new Date(e.end);
+            const today = new Date();
 
-        // Set today's time to 00:00:00 to compare only dates (optional)
-        today.setHours(0, 0, 0, 0);
+            // Set today's time to 00:00:00 to compare only dates (optional)
+            today.setHours(0, 0, 0, 0);
 
-        if (endDate >= today) modifiedEvents.push({...e, status:'Completed'})
-        }else modifiedEvents.push(e)
+            if (endDate < today) modifiedEvents.push({ ...e, status: 'Completed' })
+            else modifiedEvents.push(e)
+        }
+        else modifiedEvents.push(e)
     });
-    res.status(200).json({ success: true, events })
+    res.status(200).json({ success: true, events: modifiedEvents })
 })
 
 const updateStatus = tryCatch(async (req, res, next) => {
@@ -59,7 +63,7 @@ const updateStatus = tryCatch(async (req, res, next) => {
 
 const analytics = tryCatch(async (req, res, next) => {
     const [totalUsers, totalEvents] = await Promise.all([
-        User.countDocuments({role:'User'}),
+        User.countDocuments({ role: 'User' }),
         Event.find({})
     ])
 
@@ -80,7 +84,7 @@ const analytics = tryCatch(async (req, res, next) => {
         // Set today's time to 00:00:00 to compare only dates (optional)
         today.setHours(0, 0, 0, 0);
 
-        if (endDate >= today&&startDate<=today) activeEvents++
+        if (endDate >= today && startDate <= today) activeEvents++
     });
 
     res.status(200).json({ totalUsers, totalEvents: totalEvents.length, activeEvents, rejectedEvents, approvedEvents, pendingEvents })
