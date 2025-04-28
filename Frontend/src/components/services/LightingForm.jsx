@@ -29,26 +29,29 @@ const LightingForm = () => {
       navigate("/sign-in");
       return;
     }
-    
+
     console.log("Lighting Form Data:", formData);
-    toast.info('Submitting. Please Wait')
+    toast.info("Submitting. Please Wait");
     try {
-      const { data } = await axios.post(import.meta.env.VITE_SERVER + "/lighting",
+      const { data } = await axios.post(
+        import.meta.env.VITE_SERVER + "/lighting",
         formData,
         {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true
-        })
-      console.log(data)
-      toast.dismiss()
-      if (data?.success) toast.success('Details Submitted Successfully')
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      console.log(data);
+      toast.dismiss();
+      if (data?.success) toast.success("Details Submitted Successfully");
       else {
-        if (data?.msg) toast.error(data?.msg)
+        if (data?.msg) toast.error(data?.msg);
       }
-
     } catch (error) {
-      toast.dismiss()
-      toast.error(error?.response?.data?.msg || "Something went wrong. Please try again!")
+      toast.dismiss();
+      toast.error(
+        error?.response?.data?.msg || "Something went wrong. Please try again!"
+      );
     }
   };
 
@@ -97,6 +100,8 @@ const LightingForm = () => {
               name="intensity"
               value={formData.intensity}
               onChange={handleChange}
+              min={100}
+              max={5000}
               placeholder="e.g. 500"
               className="w-full p-2 mt-1 border rounded-lg"
             />
@@ -124,7 +129,7 @@ const LightingForm = () => {
         </form>
       </div>
       <ToastContainer />
-      </div>
+    </div>
   );
 };
 
