@@ -1,31 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 export const Pricing = () => {
-  const dummyPlans = [
+  const plans = [
     { title: "For Birthdays", price: "24999" },
     { title: "For Weddings", price: "45099" },
     { title: "For Concerts", price: "65099" },
     { title: "For Others", price: "85099" },
   ];
-
-  const [plans, setPlans] = useState(dummyPlans);
-
-  useEffect(() => {
-    const fetchPlans = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_SERVER}/pricing`);
-        const data = await response.json();
-        if (data.plans && data.plans.length > 0) {
-          setPlans(data.plans);
-        }
-      } catch (error) {
-        console.error("Error fetching pricing plans:", error);
-        // fallback to dummyPlans already set
-      }
-    };
-
-    fetchPlans();
-  }, []);
 
   return (
     <section className="py-16 px-[9%] bg-[#1e1e1e] text-white" id="price">

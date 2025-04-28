@@ -60,7 +60,7 @@ const Review = () => {
           `${import.meta.env.VITE_SERVER}/user/review`
         );
         const result = await response.json();
-        console.log(result.reviews);
+        // console.log(result.reviews);
 
         // If your backend sends { success: true, data: [...] }
         const allReviews = result.reviews; // fallback if it's direct array
@@ -127,10 +127,12 @@ const Review = () => {
                 {/* Logo and Name */}
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 flex items-center justify-center bg-blue-600 text-white font-bold rounded-full">
-                    {getInitials(client.name)}
+                    {getInitials(client.user.name)}
                   </div>
                   <div>
-                    <h3 className="text-white font-semibold">{client.name}</h3>
+                    <h3 className="text-white font-semibold">
+                      {client.user.name}
+                    </h3>
                     <p className="text-sm text-gray-400">Happy Client</p>
                   </div>
                 </div>

@@ -32,35 +32,40 @@ const EntertainmentForm = () => {
       return;
     }
 
-    const { music, games, play, extras, } = formData
+    const { music, games, play, extras } = formData;
 
-    if (!(music && games && play)) return toast.error('Please fill in all the required fields')
+    if (!(music && games && play))
+      return toast.error("Please fill in all the required fields");
 
     setLoading(true);
     setMessage("");
 
-    toast.info('Submitting. Please Wait')
+    toast.info("Submitting. Please Wait");
     try {
-      console.log(formData)
-      const { data } = await axios.post(import.meta.env.VITE_SERVER + "/entertainment",
+      console.log(formData);
+      const { data } = await axios.post(
+        import.meta.env.VITE_SERVER + "/entertainment",
         formData,
         {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true
-        })
-      console.log(data)
-      toast.dismiss()
-      if (data?.success) toast.success('Details Submitted Successfully')
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      console.log(data);
+      toast.dismiss();
+      if (data?.success) toast.success("Details Submitted Successfully");
       else {
-        if (data?.msg) toast.error(data?.msg)
+        if (data?.msg) toast.error(data?.msg);
       }
 
       setMessage("Entertainment preferences submitted successfully!");
       setFormData({ music: "", games: "", play: "", extras: "" });
     } catch (error) {
       setMessage(error.message);
-      toast.dismiss()
-      toast.error(error?.response?.data?.msg || "Something went wrong. Please try again!")
+      toast.dismiss();
+      toast.error(
+        error?.response?.data?.msg || "Something went wrong. Please try again!"
+      );
     } finally {
       setLoading(false);
     }
@@ -68,54 +73,77 @@ const EntertainmentForm = () => {
 
   useEffect(() => {
     const f = async () => {
-      const { data } = await axios.get(import.meta.env.VITE_SERVER + "/event/by-account", { withCredentials: true })
-      setFormData({ ...formData, event: data?.event })
-    }
-    f()
-  }, [])
+      const { data } = await axios.get(
+        import.meta.env.VITE_SERVER + "/event/by-account",
+        { withCredentials: true }
+      );
+      setFormData((prev) => ({ ...prev, event: data?.event }));
+    };
+    f();
+  }, []);
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-lg max-w-md mx-auto mt-10">
       <h2 className="text-center text-2xl font-bold text-orange-600 mb-4">
-        Entertainment Selection Form
+        Entertainment Form
       </h2>
       <form onSubmit={handleSubmit}>
+        {/* Music Genre */}
         <label className="block font-semibold mt-4">
           Preferred Music Genre:
         </label>
-        <input
-          type="text"
+        <select
           name="music"
-          placeholder="e.g. Jazz, Rock, Pop"
           value={formData.music}
           onChange={handleChange}
           className="w-full p-2 mt-1 border rounded-md"
-        />
+        >
+          <option value="">Select a music genre</option>
+          <option value="Jazz">Jazz</option>
+          <option value="Rock">Rock</option>
+          <option value="Pop">Pop</option>
+          <option value="Classical">Classical</option>
+          <option value="Hip Hop">Hip Hop</option>
+          <option value="Electronic">Electronic</option>
+        </select>
 
+        {/* Games and Activities */}
         <label className="block font-semibold mt-4">
           Games and Activities:
         </label>
-        <input
-          type="text"
+        <select
           name="games"
-          placeholder="e.g. Board Games, Trivia, Arcade"
           value={formData.games}
           onChange={handleChange}
           className="w-full p-2 mt-1 border rounded-md"
-        />
+        >
+          <option value="">Select games and activities</option>
+          <option value="Board Games">Board Games</option>
+          <option value="Trivia Quiz">Trivia Quiz</option>
+          <option value="Arcade Games">Arcade Games</option>
+          <option value="Outdoor Sports">Outdoor Sports</option>
+          <option value="Puzzle Challenges">Puzzle Challenges</option>
+        </select>
 
+        {/* Live Performances/Shows */}
         <label className="block font-semibold mt-4">
           Live Performances/Shows:
         </label>
-        <input
-          type="text"
+        <select
           name="play"
-          placeholder="e.g. Comedy Show, Magic Show"
           value={formData.play}
           onChange={handleChange}
           className="w-full p-2 mt-1 border rounded-md"
-        />
+        >
+          <option value="">Select a performance/show</option>
+          <option value="Comedy Show">Comedy Show</option>
+          <option value="Magic Show">Magic Show</option>
+          <option value="Dance Performance">Dance Performance</option>
+          <option value="Theatre Play">Theatre Play</option>
+          <option value="Live Band">Live Band</option>
+        </select>
 
+        {/* Additional Requests */}
         <label className="block font-semibold mt-4">Additional Requests:</label>
         <textarea
           name="extras"
@@ -125,6 +153,7 @@ const EntertainmentForm = () => {
           className="w-full p-2 mt-1 border rounded-md h-24"
         />
 
+        {/* Submit Button */}
         <button
           type="submit"
           className="w-full mt-6 p-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700"

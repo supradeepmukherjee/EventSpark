@@ -177,7 +177,7 @@ const CreateEvent = () => {
                   className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500"
                   required
                   min={
-                    new Date(Date.now() + 48 * 60 * 60 * 1000)
+                    new Date(Date.now() + 24 * 60 * 60 * 1000)
                       .toISOString()
                       .split("T")[0]
                   }
@@ -260,9 +260,26 @@ const CreateEvent = () => {
           </form>
 
           {messageVisible && (
-            <p className="mt-4 text-lg font-semibold text-green-600 text-center">
-              Your event has been created successfully.
-            </p>
+            <div className="mt-6 text-center flex flex-col items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center animate-bounce">
+                <svg
+                  className="w-10 h-10 text-green-600"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+              <p className="mt-4 text-xl font-semibold text-green-700">
+                Your event has been created successfully!
+              </p>
+            </div>
           )}
         </div>
       </div>
