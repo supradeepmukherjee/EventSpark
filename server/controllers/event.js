@@ -1,6 +1,11 @@
 import { tryCatch } from '../middlewares/error.js'
+import { Entertainment } from '../models/Entertainment.js'
 import { Event } from '../models/Event.js'
+import { Lighting } from '../models/Lighting.js'
 import { User } from '../models/User.js'
+import { Food } from '../models/FoodNDrink.js'
+import { Venue } from '../models/Venue.js'
+import { Decoration } from '../models/Decoration.js'
 import { ErrorHandler } from '../utils/utility.js'
 
 const create = tryCatch(async (req, res, next) => {
@@ -86,4 +91,27 @@ const analytics = tryCatch(async (req, res, next) => {
     res.status(200).json({ totalUsers, totalEvents: totalEvents.length, activeEvents, rejectedEvents, approvedEvents, pendingEvents })
 })
 
-export { create, getEventDetails, allEvents, eventsByUser, updateStatus, analytics }
+const getServicesData = tryCatch(async (req, res, next) => {
+    const events = await Event.find({
+        user: req.user,
+        status: 'Approved'
+    })
+    let event = ''
+    events.forEach(e => {
+        const endDate = new Date(e.end);
+        const today = new Date();
+
+        // Set today's time to 00:00:00 to compare only dates (optional)
+        today.setHours(5, 30, 0, 0)
+
+        if (endDate >= today) event = e._id
+    });
+    const entertainment = await Entertainment.findOne({ event })
+    const lighting = await Lighting.findOne({ event })
+    const food = await Food.findOne({ event })
+    const venue = await Venue.findOne({ event })
+    const decoration = await Decoration.findOne({ event })
+    res.status(200).json({ success: true, entertainment, lighting, food, venue, decoration })
+})
+
+export { create, getEventDetails, allEvents, eventsByUser, updateStatus, analytics, getServicesData }
