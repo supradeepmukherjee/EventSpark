@@ -1,6 +1,7 @@
 import { tryCatch } from '../middlewares/error.js'
 import { Entertainment } from '../models/Entertainment.js'
 import { Event } from '../models/Event.js'
+import { ErrorHandler } from '../utils/utility.js'
 
 const store = tryCatch(async (req, res, next) => {
     const events = await Event.find({
@@ -18,6 +19,8 @@ const store = tryCatch(async (req, res, next) => {
 
         if (endDate >= today) event = e._id
     });
+    const exists = await Entertainment.findOne({ event })
+    if (exists) return next(new ErrorHandler(400, 'You have already submitted the details of this service for the Ongoing Approved Event.'))
     const entertainment = await Entertainment.create({ ...req.body, event })
     res.status(200).json({ success: true, data: entertainment, msg: 'Entertainment Details Stored Successfully' })
 })

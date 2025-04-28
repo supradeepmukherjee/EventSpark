@@ -60,7 +60,7 @@ const EntertainmentForm = () => {
     } catch (error) {
       setMessage(error.message);
       toast.dismiss()
-      toast.error("Something went wrong. Please try again!");
+      toast.error(error?.response?.data?.msg || "Something went wrong. Please try again!")
     } finally {
       setLoading(false);
     }

@@ -20,7 +20,7 @@ const VenueSelectionForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!user) {
@@ -46,7 +46,7 @@ const VenueSelectionForm = () => {
 
     } catch (error) {
       toast.dismiss()
-      toast.error("Something went wrong. Please try again!");
+      toast.error(error?.response?.data?.msg || "Something went wrong. Please try again!")
     }
   };
 
@@ -117,7 +117,7 @@ const VenueSelectionForm = () => {
         </button>
       </form>
       <ToastContainer />
-      </div>
+    </div>
   );
 };
 

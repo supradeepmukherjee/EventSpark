@@ -79,7 +79,7 @@ const FoodAndDrinkForm = () => {
 
     } catch (error) {
       toast.dismiss()
-      toast.error("Something went wrong. Please try again!");
+      toast.error(error?.response?.data?.msg || "Something went wrong. Please try again!")
     } 
   };
 
