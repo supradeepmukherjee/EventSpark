@@ -37,6 +37,18 @@ const allEvents = tryCatch(async (req, res, next) => {
 
 const eventsByUser = tryCatch(async (req, res, next) => {
     const events = await Event.find({ user: req.user })
+    let modifiedEvents=[]
+    events.forEach(e => {
+        if(e.status==='Approved'){
+        const endDate = new Date(e.end);
+        const today = new Date();
+
+        // Set today's time to 00:00:00 to compare only dates (optional)
+        today.setHours(0, 0, 0, 0);
+
+        if (endDate >= today) modifiedEvents.push({...e, status:'Completed'})
+        }else modifiedEvents.push(e)
+    });
     res.status(200).json({ success: true, events })
 })
 
