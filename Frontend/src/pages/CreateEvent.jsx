@@ -176,7 +176,11 @@ const CreateEvent = () => {
                   onChange={handleChange}
                   className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500"
                   required
-                  min={new Date().toISOString().split("T")[0]}
+                  min={
+                    new Date(Date.now() + 48 * 60 * 60 * 1000)
+                      .toISOString()
+                      .split("T")[0]
+                  }
                 />
               </div>
               <div>

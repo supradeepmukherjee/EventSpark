@@ -12,7 +12,6 @@ const VenueSelectionForm = () => {
     eventType: "birthday",
     venue: "",
     capacity: "",
-    date: "",
     extras: "",
   });
 
@@ -29,24 +28,27 @@ const VenueSelectionForm = () => {
       return;
     }
     console.log(formData);
-    toast.info('Submitting. Please Wait')
+    toast.info("Submitting. Please Wait");
     try {
-      const { data } = await axios.post(import.meta.env.VITE_SERVER + "/venue",
+      const { data } = await axios.post(
+        import.meta.env.VITE_SERVER + "/venue",
         formData,
         {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true
-        })
-      console.log(data)
-      toast.dismiss()
-      if (data?.success) toast.success('Details Submitted Successfully')
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      console.log(data);
+      toast.dismiss();
+      if (data?.success) toast.success("Details Submitted Successfully");
       else {
-        if (data?.msg) toast.error(data?.msg)
+        if (data?.msg) toast.error(data?.msg);
       }
-
     } catch (error) {
-      toast.dismiss()
-      toast.error(error?.response?.data?.msg || "Something went wrong. Please try again!")
+      toast.dismiss();
+      toast.error(
+        error?.response?.data?.msg || "Something went wrong. Please try again!"
+      );
     }
   };
 
