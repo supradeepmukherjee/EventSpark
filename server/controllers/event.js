@@ -106,12 +106,25 @@ const getServicesData = tryCatch(async (req, res, next) => {
 
         if (endDate >= today) event = e._id
     });
-    const entertainment = await Entertainment.findOne({ event })
-    const lighting = await Lighting.findOne({ event })
-    const food = await Food.findOne({ event })
-    const venue = await Venue.findOne({ event })
-    const decoration = await Decoration.findOne({ event })
+    const [entertainment, lighting, food, venue, decoration] = await Promise.all([
+        Entertainment.findOne({ event }).populate('event'),
+        Lighting.findOne({ event }).populate('event'),
+        Food.findOne({ event }).populate('event'),
+        Venue.findOne({ event }).populate('event'),
+        Decoration.findOne({ event }).populate('event'),
+    ])
     res.status(200).json({ success: true, entertainment, lighting, food, venue, decoration })
 })
 
-export { create, getEventDetails, allEvents, eventsByUser, updateStatus, analytics, getServicesData }
+const getAllServicesData = tryCatch(async (req, res, next) => {
+    const [entertainment, lighting, food, venue, decoration] = await Promise.all([
+        Entertainment.findOne({ event }).populate('event'),
+        Lighting.findOne({ event }).populate('event'),
+        Food.findOne({ event }).populate('event'),
+        Venue.findOne({ event }).populate('event'),
+        Decoration.findOne({ event }).populate('event'),
+    ])
+    res.status(200).json({ success: true, entertainment, lighting, food, venue, decoration })
+})
+
+export { create, getEventDetails, allEvents, eventsByUser, updateStatus, analytics, getServicesData, getAllServicesData }
