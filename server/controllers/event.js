@@ -128,13 +128,25 @@ const getAllServicesData = tryCatch(async (req, res, next) => {
 })
 
 const savePrice = tryCatch(async (req, res, next) => {
-    let price = 0
-    for (const key in req.body) {
-        if (Object.prototype.hasOwnProperty.call(req.body, key))
-            price += Number(req.body[key]);
-    }
-    const event = await Event.findByIdAndUpdate(req.params.id, { price }, { new: true })
+    const event = await Event.findByIdAndUpdate(req.params.id, { price: req.body }, { new: true })
     res.status(200).json({ success: true, event, msg: `Total Cost of Services for Event ID ${req.params.id} saved successfully` })
 })
 
-export { create, getEventDetails, allEvents, eventsByUser, updateStatus, analytics, getServicesData, getAllServicesData, savePrice }
+const completedEvents = tryCatch(async (req, res, next) => {
+    const events = await Event.find({}).populate('user')
+    let modifiedEvents = []
+    events.forEach(e => {
+        if (e.status === 'Approved') {
+            const endDate = new Date(e.end);
+            const today = new Date();
+
+            // Set today's time to 00:00:00 to compare only dates (optional)
+            today.setHours(5, 30, 0, 0)
+
+            if (endDate >= today) modifiedEvents.push(e)
+        }
+    });
+    res.status(200).json({ success: true, events: modifiedEvents })
+})
+
+export { create, getEventDetails, allEvents, eventsByUser, updateStatus, analytics, getServicesData, getAllServicesData, savePrice, completedEvents }

@@ -50,7 +50,7 @@ const schema = new Schema({
         type: Boolean,
         default: false
     },
-    price: Number
+    price: Schema.Types.Mixed
 },
     { timestamps: true }
 )
