@@ -46,15 +46,12 @@ const Services = () => {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_SERVER}/event/save-service-prices`,
+        `${import.meta.env.VITE_SERVER}/event/save-price/${eventId}`,
         {
-          method: "POST",
+          method: "PUT",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
-          body: JSON.stringify({
-            eventId,
-            prices: pricesForEvent,
-          }),
+          body: JSON.stringify(pricesForEvent),
         }
       );
 

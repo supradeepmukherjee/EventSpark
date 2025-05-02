@@ -127,4 +127,14 @@ const getAllServicesData = tryCatch(async (req, res, next) => {
     res.status(200).json({ success: true, entertainment, lighting, food, venue, decoration })
 })
 
-export { create, getEventDetails, allEvents, eventsByUser, updateStatus, analytics, getServicesData, getAllServicesData }
+const savePrice = tryCatch(async (req, res, next) => {
+    let price = 0
+    for (const key in req.body) {
+        if (Object.prototype.hasOwnProperty.call(req.body, key))
+            price += Number(req.body[key]);
+    }
+    const event = await Event.findByIdAndUpdate(req.params.id, { price }, { new: true })
+    res.status(200).json({ success: true, event, msg: `Total Cost of Services for Event ID ${req.params.id} saved successfully` })
+})
+
+export { create, getEventDetails, allEvents, eventsByUser, updateStatus, analytics, getServicesData, getAllServicesData, savePrice }

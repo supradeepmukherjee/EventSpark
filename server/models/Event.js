@@ -49,7 +49,8 @@ const schema = new Schema({
     reviewGiven: {
         type: Boolean,
         default: false
-    }
+    },
+    price: Number
 },
     { timestamps: true }
 )

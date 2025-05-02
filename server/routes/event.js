@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { allEvents, analytics, create, eventsByUser, getEventDetails, getServicesData, updateStatus, getAllServicesData } from '../controllers/event.js'
+import { allEvents, analytics, create, eventsByUser, getEventDetails, getServicesData, updateStatus, getAllServicesData, savePrice } from '../controllers/event.js'
 
 const app = Router()
 
@@ -11,5 +11,6 @@ app.put('/:id', updateStatus)
 app.get('/analytics', analytics)
 app.get('/user-services', getServicesData)
 app.get('/admin-services', getAllServicesData)
+app.put('/save-price/:id', savePrice)
 
 export default app
