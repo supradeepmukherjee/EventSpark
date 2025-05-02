@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 const Services = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [servicePrices, setServicePrices] = useState({}); // {eventId: {serviceName: price}}
-  const [isEditing, setIsEditing] = useState({}); // {eventId: true/false}
+  const [servicePrices, setServicePrices] = useState({});
+  const [isEditing, setIsEditing] = useState({});
 
   useEffect(() => {
     const fetchEventsWithServices = async () => {
@@ -16,13 +16,18 @@ const Services = () => {
           }
         );
         const data = await response.json();
+        console.log(data);
         setEvents(data.events);
 
-        // Set all events as editable by default
+        const initialPrices = {};
         const initialEditingState = {};
+
         data.events.forEach((event) => {
-          initialEditingState[event._id] = true;
+          initialPrices[event._id] = event.price || {}; // load from backend
+          initialEditingState[event._id] = false; // start in view mode
         });
+
+        setServicePrices(initialPrices);
         setIsEditing(initialEditingState);
 
         setLoading(false);
@@ -136,7 +141,7 @@ const Services = () => {
                         onChange={(e) =>
                           handlePriceChange(event._id, service, e.target.value)
                         }
-                        disabled={!isEditing[event._id]} // first time editable, after submit locked
+                        disabled={!isEditing[event._id]}
                       />
                     </div>
                   ))}
