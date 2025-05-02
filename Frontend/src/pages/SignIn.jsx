@@ -1,11 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import signinImg from "/images/sign-in.jpg"; // ✅ Make sure this image exists
+import signinImg from "/images/sign-in.jpg";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -51,7 +53,6 @@ const SignIn = () => {
 
   return (
     <div className="flex h-screen bg-gradient-to-br from-green-100 via-white to-green-200">
-      {/* Left Side: Image */}
       <div className="hidden md:block md:w-1/2 h-full">
         <img
           src={signinImg}
@@ -60,7 +61,6 @@ const SignIn = () => {
         />
       </div>
 
-      {/* Right Side: Form */}
       <div className="w-full md:w-1/2 h-full flex items-center justify-center">
         <div className="bg-white p-8 md:p-10 rounded-lg shadow-lg w-full max-w-md mx-4">
           <h2 className="text-3xl font-bold text-green-600 text-center mb-6">
@@ -80,14 +80,25 @@ const SignIn = () => {
               required
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
             />
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              required
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
-            />
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                required
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute cursor-pointer right-3 top-3 text-xl text-gray-600 focus:outline-none"
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
+
             <button
               type="submit"
               disabled={loading}
