@@ -4,6 +4,7 @@ import Navbar from "./Navbar.jsx";
 import Users from "./Users.jsx";
 import Analytics from "./Analytics.jsx";
 import ManageEvents from "./ManageEvents.jsx";
+import Services from "./Services.jsx";
 import Payments from "./Payments.jsx";
 import SupportQueries from "./SupportQueries.jsx"; // This will handle user queries
 
@@ -26,10 +27,10 @@ export default function AdminDashboard() {
           {section === "dashboard" && <Dashboard />}
           {section === "users" && <Users />}
           {section === "events" && <ManageEvents />}
+          {section === "services" && <Services />}
           {section === "analytics" && <Analytics />}
-          {section === "payments" && <Payments />}{" "}
-          {/* Payments & Transactions */}
-          {section === "support" && <SupportQueries />} {/* User Queries */}
+          {section === "payments" && <Payments />}
+          {section === "support" && <SupportQueries />}
         </div>
       </div>
     </div>
