@@ -149,4 +149,9 @@ const completedEvents = tryCatch(async (req, res, next) => {
     res.status(200).json({ success: true, events: modifiedEvents })
 })
 
-export { create, getEventDetails, allEvents, eventsByUser, updateStatus, analytics, getServicesData, getAllServicesData, savePrice, completedEvents }
+const getEventById = tryCatch(async (req, res, next) => {
+    const event = await Event.findById(req.params.id)
+    res.status(200).json({ success: true, event })
+})
+
+export { create, getEventDetails, allEvents, eventsByUser, updateStatus, analytics, getServicesData, getAllServicesData, savePrice, completedEvents, getEventById }

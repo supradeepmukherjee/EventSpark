@@ -1,17 +1,15 @@
 import axios from 'axios'
-import { useContext, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
 
 const Payment = () => {
     const payBtn = useRef(null)
     const [loading, setLoading] = useState(false)
+    const [total, setTotal] = useState(0)
+    const [clickable, setClickable] = useState(false)
     const { id } = useParams();
     const { user } = useContext(AuthContext);
-    let gTotal = 0
-    const shippingCharge = gTotal > 499 ? 0 : 100
-    const tax = gTotal * .18
-    const total = gTotal + tax + shippingCharge
     const submitHandler = async e => {
         e.preventDefault()
         setLoading(true)
@@ -27,7 +25,7 @@ const Payment = () => {
             const { data: { key } } = await axios.get(`${import.meta.env.VITE_SERVER}/payment/key`, { withCredentials: true })
             const rzp = new window.Razorpay({
                 key,
-                amount: 100,//dynamic kor
+                amount: total,
                 currency: "INR",
                 name: "EventSpark",
                 description: "Payment Gateway",
@@ -49,17 +47,34 @@ const Payment = () => {
             setLoading(false)
         }
     }
+    useEffect(() => {
+        axios.get(`${import.meta.env.VITE_SERVER}/event/${id}`, {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true
+        })
+            .then(({ data }) => {
+                let s = 0
+                for (const key in data?.event?.price) {
+                    if (Object.prototype.hasOwnProperty.call(data?.event?.price, key)) {
+                        s += Number(data?.event?.price[key])
+                    }
+                }
+                setTotal(s)
+                setClickable(true)
+            })
+            .catch(err => console.log(err))
+    }, [id])
     return (
         <p>
             <div className="payment">
                 <button
                     type="submit"
                     ref={payBtn}
-                    disabled={loading}
+                    disabled={loading || !clickable}
                     onClick={submitHandler}
                     className='paymentBtn'
                 >
-                    {loading ? 'Please Wait...' : `Pay Rs. ${total}`}
+                    {(loading || !clickable) ? 'Please Wait...' : `Pay Rs. ${total}`}
                 </button>
             </div>
         </p>
