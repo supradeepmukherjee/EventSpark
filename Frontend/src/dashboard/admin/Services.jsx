@@ -16,7 +16,7 @@ const Services = () => {
           }
         );
         const data = await response.json();
-        console.log(data);
+
         setEvents(data.events);
 
         const initialPrices = {};
@@ -119,6 +119,7 @@ const Services = () => {
                 <div className="text-sm text-gray-400 space-y-1">
                   <p>📄 Event ID: {event._id}</p>
                   <p>📍 Venue: {event.venue}</p>
+                  <p>👥 Guests: {event.numberOfGuests}</p>
                   <p>
                     👤 User: {event.user.name} ({event.user.email})
                   </p>

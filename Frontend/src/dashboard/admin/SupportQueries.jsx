@@ -98,7 +98,7 @@ const SupportQueries = () => {
                   {!query.isResolved ? (
                     <button
                       onClick={() => handleResolve(query._id)}
-                      className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow-md transition-all"
+                      className="bg-green-600 cursor-pointer hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow-md transition-all"
                     >
                       Submit
                     </button>
