@@ -4,6 +4,7 @@ const Services = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [servicePrices, setServicePrices] = useState({}); // {eventId: {serviceName: price}}
+  const [isEditing, setIsEditing] = useState({}); // {eventId: true/false}
 
   useEffect(() => {
     const fetchEventsWithServices = async () => {
@@ -16,6 +17,14 @@ const Services = () => {
         );
         const data = await response.json();
         setEvents(data.events);
+
+        // Set all events as editable by default
+        const initialEditingState = {};
+        data.events.forEach((event) => {
+          initialEditingState[event._id] = true;
+        });
+        setIsEditing(initialEditingState);
+
         setLoading(false);
       } catch (error) {
         console.error("Failed to load events with services:", error);
@@ -59,63 +68,99 @@ const Services = () => {
         throw new Error("Failed to save service prices");
       }
 
-      alert(`Prices saved successfully for event ${eventId}!`);
+      alert(`✅ Prices saved successfully for event ${eventId}!`);
+      setIsEditing((prev) => ({
+        ...prev,
+        [eventId]: false, // lock fields after submit
+      }));
     } catch (error) {
       console.error("Error saving service prices:", error);
-      alert("Error saving service prices.");
+      alert("❌ Error saving service prices.");
     }
   };
 
+  const handleEdit = (eventId) => {
+    setIsEditing((prev) => ({
+      ...prev,
+      [eventId]: true, // unlock fields for editing
+    }));
+  };
+
   if (loading) {
-    return <div className="text-white p-5">Loading events...</div>;
+    return (
+      <div className="text-white p-10 text-center text-lg animate-pulse">
+        Loading events...
+      </div>
+    );
   }
 
   return (
-    <div className="p-5 text-white">
-      <h2 className="text-2xl font-bold mb-6">
-        All Events - Requested Services
+    <div className="p-6 text-white max-w-6xl mx-auto">
+      <h2 className="text-3xl font-extrabold mb-10 text-center">
+        🎉 All Events - Requested Services
       </h2>
 
       {events.length === 0 ? (
-        <p className="text-gray-400">No events found.</p>
+        <p className="text-gray-400 text-center">No events found.</p>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {events.map((event) => (
-            <div key={event._id} className="bg-gray-800 p-4 rounded-lg shadow">
-              <h3 className="text-xl font-semibold mb-2">{event.name}</h3>
-              <p className="text-sm text-gray-400 mb-1">
-                Event ID: {event._id}
-              </p>
-              <p className="text-sm text-gray-400 mb-1">Venue: {event.venue}</p>
-              <p className="text-sm text-gray-400 mb-3">
-                User: {event.user.name} ({event.user.email})
-              </p>
+            <div
+              key={event._id}
+              className="bg-gradient-to-br from-gray-800 to-gray-700 p-6 rounded-2xl shadow-lg hover:shadow-xl transition duration-300"
+            >
+              <div className="mb-4">
+                <h3 className="text-2xl font-semibold mb-1">{event.name}</h3>
+                <div className="text-sm text-gray-400 space-y-1">
+                  <p>📄 Event ID: {event._id}</p>
+                  <p>📍 Venue: {event.venue}</p>
+                  <p>
+                    👤 User: {event.user.name} ({event.user.email})
+                  </p>
+                </div>
+              </div>
 
               {event.services.length > 0 ? (
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {event.services.map((service) => (
-                    <div key={service} className="flex items-center gap-3">
-                      <span className="w-40">{service}</span>
+                    <div
+                      key={service}
+                      className="flex justify-between items-center border-b border-gray-600 pb-2"
+                    >
+                      <span className="font-medium">{service}</span>
                       <input
                         type="number"
                         placeholder="Enter price"
-                        className="border p-2 rounded w-40 text-white bg-gray-700"
+                        className="border border-gray-500 p-2 rounded-lg w-40 text-white bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
                         value={servicePrices[event._id]?.[service] || ""}
                         onChange={(e) =>
                           handlePriceChange(event._id, service, e.target.value)
                         }
+                        disabled={!isEditing[event._id]} // first time editable, after submit locked
                       />
                     </div>
                   ))}
-                  <button
-                    onClick={() => handleSave(event._id)}
-                    className="mt-3 bg-blue-600 text-white px-4 py-2 rounded-lg"
-                  >
-                    Submit Prices
-                  </button>
+
+                  <div className="text-right space-x-3">
+                    {!isEditing[event._id] ? (
+                      <button
+                        onClick={() => handleEdit(event._id)}
+                        className="mt-4 cursor-pointer bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded-xl font-semibold transition-transform transform hover:scale-105"
+                      >
+                        ✏️ Edit Prices
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleSave(event._id)}
+                        className="mt-4 cursor-pointer bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl font-semibold transition-transform transform hover:scale-105"
+                      >
+                        💾 Submit Prices
+                      </button>
+                    )}
+                  </div>
                 </div>
               ) : (
-                <p className="text-gray-500">No services requested.</p>
+                <p className="text-gray-500 italic">No services requested.</p>
               )}
             </div>
           ))}
