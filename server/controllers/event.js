@@ -132,7 +132,7 @@ const savePrice = tryCatch(async (req, res, next) => {
     res.status(200).json({ success: true, event, msg: `Total Cost of Services for Event ID ${req.params.id} saved successfully` })
 })
 
-const completedEvents = tryCatch(async (req, res, next) => {
+const ongoingEvents = tryCatch(async (req, res, next) => {
     const events = await Event.find({}).populate('user')
     let modifiedEvents = []
     events.forEach(e => {
@@ -154,4 +154,4 @@ const getEventById = tryCatch(async (req, res, next) => {
     res.status(200).json({ success: true, event })
 })
 
-export { create, getEventDetails, allEvents, eventsByUser, updateStatus, analytics, getServicesData, getAllServicesData, savePrice, completedEvents, getEventById }
+export { create, getEventDetails, allEvents, eventsByUser, updateStatus, analytics, getServicesData, getAllServicesData, savePrice, ongoingEvents, getEventById }
