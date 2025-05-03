@@ -6,12 +6,20 @@ const Payments = () => {
   const [payments, setPayments] = useState([]);
   const { user } = useContext(AuthContext);
 
+  const totalPrice = p => {
+    let s = 0
+    for (const key in p?.price) {
+      if (Object.prototype.hasOwnProperty.call(p?.price, key))
+        s += Number(p?.price[key])
+    }
+    return s
+  }
+
   useEffect(() => {
     const getPayments = async () => {
       try {
         const data = await fetchPayments(user.token);
-        console.log(data);
-        setPayments(data);
+        setPayments(data?.events);
       } catch (error) {
         console.error("Error fetching payments:", error);
       }
@@ -37,24 +45,23 @@ const Payments = () => {
             </tr>
           </thead>
           <tbody>
-            {payments.map((payment) => (
-              <tr key={payment.id} className="border-b text-center">
-                <td className="p-3">{payment.transactionId}</td>
-                <td className="p-3">{payment.user}</td>
+            {payments.map((payment, i) => (
+              <tr key={i} className="border-b text-center">
+                <td className="p-3">{payment?.paymentInfo?.paymentID || ''}</td>
+                <td className="p-3">{payment?.user?.name}</td>
                 <td className="p-3 text-green-500 font-bold">
-                  ₹{payment.amount}
+                  ₹{totalPrice(payment)}
                 </td>
                 <td className="p-3">
-                  {new Date(payment.date).toLocaleDateString()}
+                  {payment?.paidAt ? new Date(payment?.paidAt).toLocaleDateString() : ''}
                 </td>
                 <td
-                  className={`p-3 font-semibold ${
-                    payment.status === "Completed"
-                      ? "text-green-500"
-                      : "text-red-500"
-                  }`}
+                  className={`p-3 font-semibold ${payment?.paymentInfo?.status === "Successful"
+                    ? "text-green-500"
+                    : "text-red-500"
+                    }`}
                 >
-                  {payment.status}
+                  {payment?.paymentInfo?.status}
                 </td>
               </tr>
             ))}

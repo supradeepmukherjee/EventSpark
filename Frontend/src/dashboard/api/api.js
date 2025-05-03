@@ -3,7 +3,7 @@ const API_BASE_URL = import.meta.env.VITE_SERVER;
 // 📌 Fetch all payments & transactions
 export const fetchPayments = async (token) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/admin/payments`, {
+    const response = await fetch(`${API_BASE_URL}/event/all?status=Approved`, {
       method: "GET",
       credentials: "include", // ✅ Include credentials
       headers: {
