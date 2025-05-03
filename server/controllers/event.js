@@ -133,18 +133,19 @@ const savePrice = tryCatch(async (req, res, next) => {
 })
 
 const ongoingEvents = tryCatch(async (req, res, next) => {
-    const events = await Event.find({}).populate('user')
+    const events = await Event.find({
+        status: 'Approved',
+        paidAt: { $exists: false }
+    }).populate('user')
     let modifiedEvents = []
     events.forEach(e => {
-        if (e.status === 'Approved') {
-            const endDate = new Date(e.end);
-            const today = new Date();
+        const endDate = new Date(e.end);
+        const today = new Date();
 
-            // Set today's time to 00:00:00 to compare only dates (optional)
-            today.setHours(5, 30, 0, 0)
+        // Set today's time to 00:00:00 to compare only dates (optional)
+        today.setHours(5, 30, 0, 0)
 
-            if (endDate >= today) modifiedEvents.push(e)
-        }
+        if (endDate >= today) modifiedEvents.push(e)
     });
     res.status(200).json({ success: true, events: modifiedEvents })
 })
