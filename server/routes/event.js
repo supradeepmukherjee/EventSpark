@@ -1,12 +1,12 @@
 import { Router } from 'express'
-import { allEvents, analytics, create, eventsByUser, getEventDetails, getServicesData, updateStatus, getAllServicesData, savePrice, completedEvents, getEventById } from '../controllers/event.js'
+import { allEvents, analytics, create, eventsByUser, getEventDetails, getServicesData, updateStatus, getAllServicesData, savePrice, ongoingEvents, getEventById } from '../controllers/event.js'
 
 const app = Router()
 
 app.post('/', create)
 app.get('/', getEventDetails)
 app.get('/all', allEvents)
-app.get('/completed', completedEvents)
+app.get('/ongoing', ongoingEvents)
 app.get('/by-account', eventsByUser)
 app.get('/analytics', analytics)
 app.get('/user-services', getServicesData)
