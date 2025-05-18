@@ -65,19 +65,23 @@ const Payment = () => {
             .catch(err => console.log(err))
     }, [id])
     return (
-        <p>
-            <div className="payment">
+        <div className="min-h-screen flex items-center justify-center ">
+            <div className="w-full max-w-xs">
                 <button
                     type="submit"
                     ref={payBtn}
                     disabled={loading || !clickable}
                     onClick={submitHandler}
-                    className='paymentBtn'
+                    className={`w-full px-6 py-2 text-2xl text-white font-semibold rounded-md transition
+                ${(loading || !clickable)
+                            ? 'bg-gray-400 cursor-not-allowed'
+                            : 'bg-blue-600 hover:bg-blue-700 cursor-pointer'}
+            `}
                 >
                     {(loading || !clickable) ? 'Please Wait...' : `Pay Rs. ${total}`}
                 </button>
             </div>
-        </p>
+        </div>
     )
 }
 
