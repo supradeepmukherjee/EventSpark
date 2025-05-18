@@ -71,7 +71,7 @@ const VenueSelectionForm = () => {
           <option value="other">Other</option>
         </select>
 
-        <label className="block font-medium mt-4">Preferred Venue:</label>
+        <label className="block font-medium mt-4">Preferred Venue:*</label>
         <input
           type="text"
           name="venue"
@@ -79,9 +79,10 @@ const VenueSelectionForm = () => {
           value={formData.venue}
           onChange={handleChange}
           className="w-full p-2 border rounded-lg mt-1"
+required
         />
 
-        <label className="block font-medium mt-4">Expected Guest Count:</label>
+        <label className="block font-medium mt-4">Expected Guest Count:*</label>
         <input
           type="number"
           name="capacity"
@@ -89,16 +90,9 @@ const VenueSelectionForm = () => {
           value={formData.capacity}
           onChange={handleChange}
           className="w-full p-2 border rounded-lg mt-1"
+required
         />
 
-        <label className="block font-medium mt-4">Event Date:</label>
-        <input
-          type="date"
-          name="date"
-          value={formData.date}
-          onChange={handleChange}
-          className="w-full p-2 border rounded-lg mt-1"
-        />
 
         <label className="block font-medium mt-4">
           Additional Requirements:

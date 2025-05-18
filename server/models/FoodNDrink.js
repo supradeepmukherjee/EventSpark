@@ -8,7 +8,7 @@ const schema = new Schema({
     },
     guests: {
         type: String,
-        required: true,
+        //required: true,
     },
     date: String,
     cuisines: [{

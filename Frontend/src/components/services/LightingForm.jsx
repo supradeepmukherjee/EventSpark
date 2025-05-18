@@ -79,7 +79,7 @@ const LightingForm = () => {
 
           <div>
             <label className="block font-semibold">
-              Preferred Light Color:
+              Preferred Light Color:*
             </label>
             <input
               type="text"
@@ -88,12 +88,13 @@ const LightingForm = () => {
               onChange={handleChange}
               placeholder="e.g. Warm White, Blue"
               className="w-full p-2 mt-1 border rounded-lg"
+required
             />
           </div>
 
           <div>
             <label className="block font-semibold">
-              Light Intensity (in lumens):
+              Light Intensity (in lumens):*
             </label>
             <input
               type="number"
@@ -104,6 +105,7 @@ const LightingForm = () => {
               max={5000}
               placeholder="e.g. 500"
               className="w-full p-2 mt-1 border rounded-lg"
+required
             />
           </div>
 

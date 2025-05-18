@@ -50,6 +50,21 @@ const FoodAndDrinkForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+if (formData.cuisines.length === 0) {
+    toast.error("Please select at least one cuisine option.");
+    return;
+  }
+
+  if (formData.beverages.length === 0) {
+    toast.error("Please select a beverage preference.");
+    return;
+  }
+
+  if (formData.beverages.length > 1) {
+    toast.error("Please select only one beverage type: Alcoholic or Non-Alcoholic.");
+    return;
+  }
+
     if (!user) {
       alert("You must be logged in to submit catering details.");
       navigate("/sign-in");
