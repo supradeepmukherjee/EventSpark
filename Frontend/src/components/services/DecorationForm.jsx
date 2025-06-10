@@ -257,9 +257,9 @@ const DecorationForm = () => {
                   alt="Preview"
                   className="w-full rounded-lg"
                 />
-                <p className="text-center mt-2 font-semibold text-gray-700">
+                {/* <p className="text-center mt-2 font-semibold text-gray-700">
                   Budget: {item.budget}
-                </p>
+                </p> */}
               </div>
             ))}
           </div>
