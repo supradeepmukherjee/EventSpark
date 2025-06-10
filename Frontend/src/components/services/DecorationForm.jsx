@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { toast } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 
 const themeData = {
   classic: [
@@ -105,12 +105,13 @@ const DecorationForm = () => {
 
     toast.info('Submitting. Please Wait')
     try {
-      const { data } = await axios.post(import.meta.env.VITE_SERVER + "/decoration",
-        finalData,
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true
-        })
+      // const { data } = await axios.post(import.meta.env.VITE_SERVER + "/decoration",
+      //   finalData,
+      //   {
+      //     headers: { 'Content-Type': 'application/json' },
+      //     withCredentials: true
+      //   })
+      const data = { success: true }
       console.log(data)
       toast.dismiss()
       if (data?.success) toast.success('Details Submitted Successfully')
@@ -274,6 +275,7 @@ const DecorationForm = () => {
           </button>
         </div>
       )}
+      <ToastContainer />
     </div>
   );
 };
